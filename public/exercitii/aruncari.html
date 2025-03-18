@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aruncări - Exerciții</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <script defer src="../js/exercitii.js"></script>
+</head>
+<body>
+    <h1>Aruncări - Perfecționează-ți precizia</h1>
+    <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ.</p>
+
+    <div class="exercise-list">
+        <button class="exercise-btn" data-exercise="aruncari1">Aruncare liberă</button>
+        <button class="exercise-btn" data-exercise="aruncari2">Aruncare de la distanță</button>
+        <button class="exercise-btn" data-exercise="aruncari3">Aruncare în mișcare</button>
+    </div>
+
+    <div id="exercise-details" class="hidden">
+        <h2 id="exercise-title"></h2>
+        <p id="exercise-description"></p>
+        <iframe id="exercise-video" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+        <button id="close-exercise">Închide</button>
+    </div>
+
+    <h2>Monitorizarea progresului</h2>
+    <label for="progres">Progres (%):</label>
+    <input type="number" id="progres" min="0" max="100" value="0">
+    <button id="save-progress">Salvează Progresul</button>
+
+    <button id="back" onclick="window.location.href='../dashboard.html'">Înapoi la Dashboard</button>
+</body>
+</html>
