@@ -1,4 +1,4 @@
-/* Reset CSS pentru consistență între browsere */
+/* ======== RESET & BAZĂ ======== */
 * {
     margin: 0;
     padding: 0;
@@ -11,12 +11,83 @@ body {
     color: #333;
     text-align: center;
     padding: 20px;
+    font-size: 15px;
 }
 
-/* ======== Containere ======== */
+/* ======== FORM LOGIN / REGISTER ======== */
+.form-container {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 380px;
+    margin: 50px auto;
+    text-align: center;
+    animation: fadeIn 0.6s ease-out;
+}
+
+.form-container h2 {
+    font-size: 24px;
+    color: #FF7F11;
+    margin-bottom: 20px;
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+input:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+    outline: none;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #FF7F11, #db6415);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #db6415, #f55d05);
+}
+
+.register-link {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #3B82F6;
+    text-decoration: none;
+    transition: color 0.3s ease-in-out;
+}
+
+.register-link a:hover {
+    color: #1e40af;
+}
+
+/* ======== DASHBOARD + CONTAINER GENERAL ======== */
 .container {
     width: 90%;
-    max-width: 600px;
+    max-width: 800px;
     margin: auto;
     background: white;
     padding: 30px;
@@ -24,104 +95,204 @@ body {
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* ======== Titluri ======== */
 h1 {
     font-size: 26px;
     color: #FF7F11;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
+}
+
+h2 {
+    font-size: 20px;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    color: #222;
 }
 
 p {
-    font-size: 16px;
+    font-size: 15px;
     color: #555;
     margin-bottom: 20px;
 }
 
-/* ======== Butoane ======== */
-button, .category-btn {
-    display: inline-block;
+/* ======== CATEGORII - DASHBOARD ======== */
+.category-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 25px;
+    justify-items: center;
+}
+
+.category-btn {
     width: 100%;
-    max-width: 250px;
-    padding: 12px;
-    font-size: 16px;
+    max-width: 220px;
+    padding: 10px;
+    font-size: 15px;
     font-weight: bold;
     background: linear-gradient(135deg, #FF7F11, #db6415);
     color: white;
     border: none;
     border-radius: 10px;
     cursor: pointer;
-    transition: all 0.3s ease-in-out;
+    transition: transform 0.2s ease-in-out, background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-button:hover, .category-btn:hover {
+.category-btn:hover {
     background: linear-gradient(135deg, #db6415, #f55d05);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: scale(1.02);
 }
 
-button:active, .category-btn:active {
-    transform: translateY(0);
+/* ======== BARA DE PROGRES ======== */
+.progress-container {
+    width: 90%;
+    max-width: 600px;
+    margin: 20px auto 0;
 }
 
-/* ======== Butoane de categorie ======== */
-.category-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    margin-top: 20px;
+.progress-container p {
+    margin: 10px 0 4px;
+    font-weight: 500;
 }
 
-.category-btn {
-    width: 200px;
-    font-size: 16px;
-    text-transform: uppercase;
-}
-
-/* ======== Casete de bifat ======== */
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 12px 0;
-}
-
-.checkbox-container label {
-    font-size: 16px;
-    color: #555;
-}
-
-.checkbox-container input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-left: 12px;
-    cursor: pointer;
-}
-
-/* ======== Bare de progres ======== */
 progress {
     width: 100%;
     height: 14px;
     appearance: none;
-    border-radius: 12px;
+    border-radius: 10px;
     overflow: hidden;
+    transition: all 0.5s ease-in-out;
 }
 
 progress::-webkit-progress-bar {
     background-color: #ddd;
-    border-radius: 12px;
+    border-radius: 10px;
 }
 
 progress::-webkit-progress-value {
     background: linear-gradient(135deg, #2ecc71, #27ae60);
-    border-radius: 12px;
-    transition: width 0.5s ease-in-out;
+    border-radius: 10px;
 }
 
-/* ======== Animații ======== */
+progress::-moz-progress-bar {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    border-radius: 10px;
+}
+
+/* ======== LOGOUT BUTTON - MIC, COMPACT ======== */
+#logout-btn {
+    margin: 30px auto 0;
+    padding: 10px 20px;
+    width: auto;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border-radius: 10px;
+}
+
+#logout-btn:hover {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+}
+
+/* ======== PAGINI DE EXERCIȚII ======== */
+.exercise-page h1 {
+    font-size: 22px;
+    color: #FF7F11;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.exercise-page p {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.exercise-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    margin: 20px auto;
+    max-width: 600px;
+}
+
+.exercise-btn {
+    background: linear-gradient(135deg, #FF7F11, #db6415);
+    color: white;
+    font-weight: bold;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    font-size: 15px;
+}
+
+.exercise-btn:hover {
+    background: linear-gradient(135deg, #db6415, #f55d05);
+    transform: scale(1.02);
+}
+
+#exercise-details {
+    margin-top: 30px;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+#exercise-details iframe {
+    width: 100%;
+    max-width: 100%;
+    height: 315px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+#exercise-checkbox-container {
+    margin-top: 15px;
+}
+
+#close-exercise {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#close-exercise:hover {
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+}
+
+#progress-percentage {
+    color: #222;
+    font-weight: bold;
+}
+
+#back {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #3B82F6, #1e40af);
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#back:hover {
+    background: linear-gradient(135deg, #1e40af, #3B82F6);
+}
+
+/* ======== ANIMAȚII ======== */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
@@ -131,22 +302,28 @@ progress::-webkit-progress-value {
     animation: fadeIn 0.6s ease-out;
 }
 
-/* ======== Media Query pentru ecrane mici ======== */
+/* ======== RESPONSIVE ======== */
 @media (max-width: 768px) {
-    .category-container {
-        flex-direction: column;
-        align-items: center;
+    .category-container,
+    .exercise-list {
+        grid-template-columns: 1fr !important;
     }
 
-    button, .category-btn {
-        width: 100%;
+    .form-container,
+    .container {
+        padding: 20px;
+    }
+
+    button, .category-btn, .exercise-btn {
+        font-size: 14px;
+        padding: 10px;
     }
 
     h1 {
         font-size: 22px;
     }
 
-    .category-btn {
-        width: 100%;
+    iframe {
+        height: 200px;
     }
 }

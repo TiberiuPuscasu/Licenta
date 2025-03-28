@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container fade-in">
-        <h1>Autentificare</h1>
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Parolă">
-        <button id="login-btn">Login</button>
-        <p>Nu ai cont? <a href="register.html">Înregistrează-te</a></p>
-    </div>
 
-    <script type="module" src="js/auth.js"></script>
+  <div class="form-container fade-in">
+    <h2>Autentificare</h2>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Parolă" required />
+    <button id="login-btn">Login</button>
+    <p class="register-link">Nu ai cont? <a href="register.html">Înregistrează-te</a></p>
+  </div>
+
+  <script type="module" src="js/auth.js"></script>
 </body>
 </html>
