@@ -1,83 +1,104 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <!-- Mutăm butonul aici -->
-    <button id="dark-mode-toggle">🌙 Dark Mode</button>
+  <button id="dark-mode-toggle">🌙 Dark Mode</button>
 
-    <!-- Restul conținutului -->
-    <div class="container">
-        <h1>BINE AI VENIT!</h1>
-        <p>Alege o categorie de exerciții pentru a începe antrenamentul.</p>
+  <div class="container">
+    <h1>BINE AI VENIT!</h1>
+    <p>Alege o categorie de exerciții pentru a începe antrenamentul.</p>
 
-        <h2>Categorii de exerciții</h2>
-        <div class="category-container">
-            <button class="category-btn" onclick="location.href='exercitii/dribling.html'">Dribling</button>
-            <button class="category-btn" onclick="location.href='exercitii/aruncari.html'">Aruncări</button>
-            <button class="category-btn" onclick="location.href='exercitii/aparare.html'">Apărare</button>
-            <button class="category-btn" onclick="location.href='exercitii/conditie.html'">Condiție fizică</button>
-        </div>
-
-        <h2>Progresul tău</h2>
-
-        <div class="progress-container">
-            <p>Dribling</p>
-            <progress id="progress-dribling" value="0" max="100"></progress>
-        
-            <p>Aruncări</p>
-            <progress id="progress-aruncari" value="0" max="100"></progress>
-        
-            <p>Apărare</p>
-            <progress id="progress-aparare" value="0" max="100"></progress>
-        
-            <p>Condiție fizică</p>
-            <progress id="progress-conditie" value="0" max="100"></progress>
-        </div>
-        
-        <!-- Script pentru progres -->
-        <script src="js/dashboard.js"></script>
-        
-
-        <button id="logout-btn" class="category-btn">Log out</button>
-
+    <h2>Categorii de exerciții</h2>
+    <div class="category-container">
+      <button class="category-btn" onclick="location.href='exercitii/dribling.html'">Dribling</button>
+      <button class="category-btn" onclick="location.href='exercitii/aruncari.html'">Aruncări</button>
+      <button class="category-btn" onclick="location.href='exercitii/aparare.html'">Apărare</button>
+      <button class="category-btn" onclick="location.href='exercitii/conditie.html'">Condiție fizică</button>
     </div>
 
-    <script type="module" src="js/auth.js"></script>
+    <h2>Progresul tău</h2>
+    <div class="progress-container">
+      <p>Dribling</p>
+      <progress id="progress-dribling" value="0" max="100"></progress>
 
-    <script type="module">
-        import { calculateTotalProgress } from "../js/exercitii.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+      <p>Aruncări</p>
+      <progress id="progress-aruncari" value="0" max="100"></progress>
 
-        const auth = getAuth();
+      <p>Apărare</p>
+      <progress id="progress-aparare" value="0" max="100"></progress>
 
-        // Așteaptă autentificarea utilizatorului
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                console.log("Utilizator autentificat:", user.uid);
+      <p>Condiție fizică</p>
+      <progress id="progress-conditie" value="0" max="100"></progress>
+    </div>
 
-                // Calculează progresul total
-                const totalProgress = await calculateTotalProgress();
+    <h2>Progres Total</h2>
+    <div class="progress-container">
+      <p><span id="total-progress-text">0%</span> completat</p>
+      <progress id="total-progress-bar" value="0" max="100"></progress>
+    </div>
 
-                // Actualizează progresul total în dashboard
-                const progressBar = document.getElementById("total-progress-bar");
-                const progressText = document.getElementById("total-progress-text");
+    <button id="logout-btn" class="category-btn">Log out</button>
+  </div>
 
-                if (progressBar) {
-                    progressBar.style.width = `${totalProgress}%`;
-                }
-                if (progressText) {
-                    progressText.textContent = `${totalProgress}%`;
-                }
-            } else {
-                console.error("Niciun utilizator autentificat!");
-            }
-        });
-    </script>
-   
+  <script src="js/dashboard.js"></script>
+  <script type="module" src="js/auth.js"></script>
+
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+    import { db } from "../js/firebase-config.js";
+    import { calculateTotalProgress } from "../js/exercitii.js";
+
+    const auth = getAuth();
+
+    const totalExercisesPerCategory = {
+      dribling: 3,
+      aruncari: 3,
+      aparare: 3,
+      conditie: 3
+    };
+
+    async function updateCategoryProgress(user) {
+      const progresRef = doc(db, "progres", user.uid);
+      const snapshot = await getDoc(progresRef);
+      const data = snapshot.exists() ? snapshot.data() : {};
+
+      Object.keys(totalExercisesPerCategory).forEach(categorie => {
+        const total = totalExercisesPerCategory[categorie];
+        const exercises = data[categorie] || {};
+        const completed = Object.values(exercises).filter(val => val === true).length;
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+        const bar = document.getElementById(`progress-${categorie}`);
+        if (bar) bar.value = percent;
+      });
+    }
+
+    async function updateTotalProgress() {
+      const totalProgress = await calculateTotalProgress();
+      const progressBar = document.getElementById("total-progress-bar");
+      const progressText = document.getElementById("total-progress-text");
+
+      if (progressBar) progressBar.value = totalProgress;
+      if (progressText) progressText.textContent = `${totalProgress}%`;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        console.log("Utilizator autentificat:", user.uid);
+        await updateCategoryProgress(user);
+        await updateTotalProgress();
+        setInterval(() => updateCategoryProgress(user), 5000);
+        setInterval(updateTotalProgress, 5000);
+      } else {
+        console.error("Niciun utilizator autentificat!");
+      }
+    });
+  </script>
 </body>
 </html>

@@ -3,71 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Condiție fizică - Exerciții</title>
+  <title>Condiție Fizică - Exerciții</title>
   <link rel="stylesheet" href="../css/styles.css" />
-  <script type="module" src="../js/exercitii.js"></script>
-  
 </head>
 <body class="exercise-page">
-    <!-- Butonul Dark Mode -->
-    <button id="dark-mode-toggle">🌙 Dark Mode</button>
+  <button id="dark-mode-toggle">🌙 Dark Mode</button>
 
-    <div class="container fade-in">
-        <h1>Condiție fizică - Îmbunătățește-ți rezistența</h1>
-        <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
+  <div class="container fade-in">
+    <h1>Condiție Fizică - Crește-ți rezistența</h1>
+    <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
 
-        <div class="exercise-list">
-            <button class="exercise-btn" data-exercise="conditie1">Sprinturi</button>
-            <button class="exercise-btn" data-exercise="conditie2">Sărituri</button>
-            <button class="exercise-btn" data-exercise="conditie3">Antrenament de rezistență</button>
-        </div>
-
-        <div id="exercise-details" class="hidden">
-            <h2 id="exercise-title"></h2>
-            <p id="exercise-description"></p>
-            <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
-
-            <div id="exercise-checkbox-container"></div>
-            <button id="close-exercise">Închide</button>
-        </div>
-
-        <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
-        <button id="back" onclick="window.location.href='../dashboard.html'">Înapoi la Dashboard</button>
+    <div class="exercise-list">
+      <button class="exercise-btn" data-exercise="conditie1">Sprinturi scurte</button>
+      <button class="exercise-btn" data-exercise="conditie2">Antrenament HIIT</button>
+      <button class="exercise-btn" data-exercise="conditie3">Exerciții de rezistență</button>
     </div>
-    <script src="/js/dark-mode.js"></script>
-    <script type="module">
-        import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
 
-        const auth = getAuth();
-        const categorie = "conditie"; // Categoria curentă
+    <div id="exercise-details" class="hidden">
+      <h2 id="exercise-title"></h2>
+      <p id="exercise-description"></p>
+      <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
 
-        const exercises = [
-    { id: "conditie1", name: "Alergare pe distanță scurtă" },
-    { id: "conditie2", name: "Alergare pe distanță lungă" },
-    { id: "conditie3", name: "Exerciții de rezistență" }
-];
+      <div id="exercise-checkbox-container"></div>
+      <button id="close-exercise">Închide</button>
+    </div>
 
-        // Așteaptă autentificarea utilizatorului
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("Utilizator autentificat:", user.uid);
+    <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
+    <button id="back" onclick="window.location.href='../dashboard.html'">Înapoi la Dashboard</button>
+  </div>
 
-                // Încarcă progresul utilizatorului la încărcarea paginii
-                loadCheckboxState(categorie);
+  <script src="/js/dark-mode.js"></script>
+  <script type="module">
+    import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+    import { db } from "../js/firebase-config.js";
 
-                // Salvează progresul când un checkbox este bifat
-                document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
-                    checkbox.addEventListener("change", (event) => {
-                        const exercitiu = event.target.id; // ID-ul checkbox-ului
-                        saveProgress(checkbox, exercitiu, categorie);
-                    });
-                });
-            } else {
-                console.error("Niciun utilizator autentificat!");
-            }
+    const auth = getAuth();
+    const categorie = "conditie";
+
+    const exercises = {
+      conditie1: {
+        title: "Sprinturi scurte",
+        description: "Exersează sprinturi de 10-15 metri pentru a-ți îmbunătăți viteza și explozia.",
+        video: "https://www.youtube.com/embed/EXEMPLU_C1"
+      },
+      conditie2: {
+        title: "Antrenament HIIT",
+        description: "Încearcă o sesiune de High Intensity Interval Training pentru rezistență cardiovasculară.",
+        video: "https://www.youtube.com/embed/EXEMPLU_C2"
+      },
+      conditie3: {
+        title: "Exerciții de rezistență",
+        description: "Lucrează serii mai lungi pentru a-ți dezvolta anduranța în meci.",
+        video: "https://www.youtube.com/embed/EXEMPLU_C3"
+      }
+    };
+
+    const detailsSection = document.getElementById("exercise-details");
+    const titleElement = document.getElementById("exercise-title");
+    const descriptionElement = document.getElementById("exercise-description");
+    const videoElement = document.getElementById("exercise-video");
+    const checkboxContainer = document.getElementById("exercise-checkbox-container");
+    const closeButton = document.getElementById("close-exercise");
+
+    document.querySelectorAll(".exercise-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const key = btn.dataset.exercise;
+        const ex = exercises[key];
+        if (!ex) return;
+
+        titleElement.textContent = ex.title;
+        descriptionElement.textContent = ex.description;
+        videoElement.src = ex.video;
+        detailsSection.classList.remove("hidden");
+
+        checkboxContainer.innerHTML = `
+          <label>
+            <input type="checkbox" id="${key}" />
+            Am finalizat acest exercițiu
+          </label>
+        `;
+
+        onAuthStateChanged(auth, async (user) => {
+          if (!user) return;
+
+          const progresRef = doc(db, "progres", user.uid);
+          const snapshot = await getDoc(progresRef);
+          const data = snapshot.exists() ? snapshot.data() : {};
+          const userProgress = data[categorie] || {};
+
+          const cb = document.getElementById(key);
+          if (cb) {
+            cb.checked = userProgress[key] === true;
+            cb.addEventListener("change", () => {
+              saveProgress(cb, key, categorie);
+            });
+          }
+
+          loadCheckboxState(categorie); // actualizează procentul
         });
-    </script>
+      });
+    });
+
+    closeButton.addEventListener("click", () => {
+      detailsSection.classList.add("hidden");
+      videoElement.src = "";
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loadCheckboxState(categorie);
+      }
+    });
+  </script>
 </body>
 </html>
-``` 

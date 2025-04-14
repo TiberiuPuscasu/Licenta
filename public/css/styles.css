@@ -405,6 +405,77 @@ body.dark-mode input:focus {
     transform: scale(1.1); /* Efect de mărire la hover */
 }
 
+/* ======== FIX: VIZIBILITATE TEXT CHECKBOX & ETICHETE ÎN DARK MODE ======== */
+body.dark-mode #exercise-checkbox-container label {
+    color: #ffffff !important;
+    font-size: 16px;
+    font-weight: 500;
+    display: inline-block;
+    margin-top: 10px;
+  }
+  
+  body.dark-mode .exercise-page p,
+  body.dark-mode .exercise-page label,
+  body.dark-mode .progress-container p {
+    color: #f0f0f0 !important;
+  }
+  
+  /* ======== CHECKBOX MAI VIZIBIL ȘI ACCENT COLOR ======== */
+  input[type="checkbox"] {
+    transform: scale(1.3);
+    margin-right: 6px;
+    accent-color: #FF7F11;
+    cursor: pointer;
+  }
+  
+  /* ======== DARK MODE TOGGLE BUTTON STABILIT ÎN AMBELE MODURI ======== */
+  #dark-mode-toggle {
+    background-color: #FF7F11;
+    color: white;
+  }
+  
+  body.dark-mode #dark-mode-toggle {
+    background-color: #444;
+    color: white;
+  }
+/* ======== FIX FINAL TEXT LABEL ÎN DARK MODE (chiar și fără clasă) ======== */
+body.dark-mode #exercise-checkbox-container label,
+body.dark-mode #exercise-checkbox-container input[type="checkbox"] + label,
+body.dark-mode label {
+  color: #ffffff !important;
+  font-size: 16px;
+  font-weight: 500;
+}
+/* ======== DARK MODE: FIX VIZIBILITATE EXERCITIU DETALII ======== */
+body.dark-mode #exercise-details {
+    background-color: #1e1e1e;
+  }
+  
+  body.dark-mode #exercise-details h2,
+  body.dark-mode #exercise-details p,
+  body.dark-mode #exercise-checkbox-container label,
+  body.dark-mode label,
+  body.dark-mode #progress-percentage {
+    color: #f9f9f9 !important;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  
+  body.dark-mode input[type="checkbox"] {
+    transform: scale(1.2);
+    accent-color: #FF7F11;
+    margin-right: 6px;
+  }
+  
+  /* Asigură spațiu corect între checkbox și text */
+  #exercise-checkbox-container label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
 /* ======== RESPONSIVE ======== */
 @media (max-width: 768px) {
     .category-container,
