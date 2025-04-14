@@ -23,4 +23,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     updateDashboardProgress();
+
+    const toggleButton = document.getElementById("dark-mode-toggle");
+    const body = document.body;
+
+    // Verifică preferința utilizatorului din localStorage
+    const darkMode = localStorage.getItem("darkMode");
+    if (darkMode === "enabled") {
+        body.classList.add("dark-mode");
+        toggleButton.textContent = "☀️ Light Mode";
+    }
+
+    // Comută între moduri
+    toggleButton.addEventListener("click", () => {
+        if (body.classList.contains("dark-mode")) {
+            body.classList.remove("dark-mode");
+            localStorage.setItem("darkMode", "disabled");
+            toggleButton.textContent = "🌙 Dark Mode";
+        } else {
+            body.classList.add("dark-mode");
+            localStorage.setItem("darkMode", "enabled");
+            toggleButton.textContent = "☀️ Light Mode";
+        }
+    });
 });

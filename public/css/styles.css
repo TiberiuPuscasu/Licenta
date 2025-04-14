@@ -302,6 +302,109 @@ progress::-moz-progress-bar {
     animation: fadeIn 0.6s ease-out;
 }
 
+/* ======== Dark Mode ======== */
+body.dark-mode {
+    background-color: #121212; /* Fundal întunecat */
+    color: #f0f0f0; /* Text deschis pentru vizibilitate */
+}
+
+body.dark-mode h1, 
+body.dark-mode h2, 
+body.dark-mode h3, 
+body.dark-mode p, 
+body.dark-mode span {
+    color: #f0f0f0; /* Text deschis pentru titluri, paragrafe și alte elemente */
+}
+
+body.dark-mode a {
+    color: #3B82F6; /* Linkuri albastre pentru contrast */
+    text-decoration: none;
+}
+
+body.dark-mode a:hover {
+    color: #2563EB; /* Schimbare de culoare la hover */
+}
+
+/* Stiluri pentru butoane */
+body.dark-mode button {
+    background-color: #3B82F6; /* Fundal albastru pentru butoane */
+    color: white; /* Text alb */
+    border: none;
+}
+
+body.dark-mode button:hover {
+    background-color: #2563EB; /* Fundal mai închis la hover */
+}
+
+/* Stiluri pentru inputuri */
+body.dark-mode input, 
+body.dark-mode textarea {
+    background-color: #1e1e1e; /* Fundal întunecat pentru inputuri */
+    color: #f0f0f0; /* Text deschis */
+    border: 1px solid #555; /* Bordură gri */
+}
+
+body.dark-mode input::placeholder, 
+body.dark-mode textarea::placeholder {
+    color: #aaa; /* Placeholder vizibil */
+}
+
+body.dark-mode .container {
+    background: #1e1e1e;
+    color: #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode button {
+    background: linear-gradient(45deg, #3B82F6, #1e40af);
+    color: white;
+}
+
+body.dark-mode button:hover {
+    background: linear-gradient(45deg, #1e40af, #3B82F6);
+}
+
+body.dark-mode input {
+    background: #2c2c2c;
+    color: #e0e0e0;
+    border: 1px solid #555;
+}
+
+body.dark-mode input::placeholder {
+    color: #aaa;
+}
+
+body.dark-mode input:focus {
+    border-color: #3B82F6;
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.5);
+}
+
+/* ======== Stiluri pentru butonul Dark Mode ======== */
+#dark-mode-toggle {
+    position: fixed !important;
+    top: 10px !important;
+    right: 10px !important;
+    width: 40px !important;
+    height: 40px !important;
+    font-size: 18px !important;
+    z-index: 1000 !important;
+    font-weight: bold;
+    background: linear-gradient(45deg, #FF7F11, #db6415); /* Gradient atractiv */
+    color: white;
+    border: none;
+    border-radius: 50%; /* Formă rotundă pentru buton */
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+    display: flex; /* Centrare a conținutului */
+    align-items: center;
+    justify-content: center;
+}
+
+#dark-mode-toggle:hover {
+    background: linear-gradient(45deg, #db6415, #f55d05); /* Schimbare de culoare la hover */
+    transform: scale(1.1); /* Efect de mărire la hover */
+}
+
 /* ======== RESPONSIVE ======== */
 @media (max-width: 768px) {
     .category-container,
