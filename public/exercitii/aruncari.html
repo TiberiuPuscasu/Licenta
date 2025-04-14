@@ -35,5 +35,49 @@
         <button id="back" onclick="window.location.href='../dashboard.html'">Înapoi la Dashboard</button>
     </div>
     <script src="/js/dark-mode.js"></script>
+    <script type="module">
+    import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+    const auth = getAuth();
+    const categorie = "aruncari"; // Categoria curentă
+
+    // Lista exercițiilor pentru categoria curentă
+    const exercises = [
+        { id: "aruncari1", name: "Aruncări libere" },
+        { id: "aruncari2", name: "Aruncări de la 3 puncte" },
+        { id: "aruncari3", name: "Aruncări în mișcare" }
+    ];
+
+    // Generează checkbox-uri dinamic
+    const checkboxContainer = document.getElementById("exercise-checkbox-container");
+    exercises.forEach((exercise) => {
+        const label = document.createElement("label");
+        label.innerHTML = `
+            <input type="checkbox" id="${exercise.id}"> ${exercise.name}
+        `;
+        checkboxContainer.appendChild(label);
+    });
+
+    // Așteaptă autentificarea utilizatorului
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            console.log("Utilizator autentificat:", user.uid);
+
+            // Încarcă progresul utilizatorului la încărcarea paginii
+            loadCheckboxState(categorie);
+
+            // Salvează progresul când un checkbox este bifat
+            document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+                checkbox.addEventListener("change", (event) => {
+                    const exercitiu = event.target.id; // ID-ul checkbox-ului
+                    saveProgress(checkbox, exercitiu, categorie);
+                });
+            });
+        } else {
+            console.error("Niciun utilizator autentificat!");
+        }
+    });
+</script>
 </body>
 </html>

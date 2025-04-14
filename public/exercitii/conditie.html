@@ -35,5 +35,39 @@
         <button id="back" onclick="window.location.href='../dashboard.html'">Înapoi la Dashboard</button>
     </div>
     <script src="/js/dark-mode.js"></script>
+    <script type="module">
+        import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+        const auth = getAuth();
+        const categorie = "conditie"; // Categoria curentă
+
+        const exercises = [
+    { id: "conditie1", name: "Alergare pe distanță scurtă" },
+    { id: "conditie2", name: "Alergare pe distanță lungă" },
+    { id: "conditie3", name: "Exerciții de rezistență" }
+];
+
+        // Așteaptă autentificarea utilizatorului
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Utilizator autentificat:", user.uid);
+
+                // Încarcă progresul utilizatorului la încărcarea paginii
+                loadCheckboxState(categorie);
+
+                // Salvează progresul când un checkbox este bifat
+                document.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+                    checkbox.addEventListener("change", (event) => {
+                        const exercitiu = event.target.id; // ID-ul checkbox-ului
+                        saveProgress(checkbox, exercitiu, categorie);
+                    });
+                });
+            } else {
+                console.error("Niciun utilizator autentificat!");
+            }
+        });
+    </script>
 </body>
 </html>
+``` 

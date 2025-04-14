@@ -48,6 +48,36 @@
     </div>
 
     <script type="module" src="js/auth.js"></script>
+
+    <script type="module">
+        import { calculateTotalProgress } from "../js/exercitii.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+        const auth = getAuth();
+
+        // Așteaptă autentificarea utilizatorului
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                console.log("Utilizator autentificat:", user.uid);
+
+                // Calculează progresul total
+                const totalProgress = await calculateTotalProgress();
+
+                // Actualizează progresul total în dashboard
+                const progressBar = document.getElementById("total-progress-bar");
+                const progressText = document.getElementById("total-progress-text");
+
+                if (progressBar) {
+                    progressBar.style.width = `${totalProgress}%`;
+                }
+                if (progressText) {
+                    progressText.textContent = `${totalProgress}%`;
+                }
+            } else {
+                console.error("Niciun utilizator autentificat!");
+            }
+        });
+    </script>
    
 </body>
 </html>
