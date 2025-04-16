@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistici</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <button id="dark-mode-toggle">🌙</button>
+  <div id="user-info">Autentificare...</div>
+
+  <div class="container">
+    <h1>📊 Statistici Progres</h1>
+    <canvas id="progressChart" width="400" height="200"></canvas>
+    <br>
+    <button id="export-btn" class="category-btn">⬇️ Exportă Progres (CSV)</button>
+    <br><br>
+    <button onclick="location.href='dashboard.html'" class="category-btn">🔙 Înapoi la Dashboard</button>
+  </div>
+
+  <script src="js/dark-mode.js"></script>
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+    import { db } from "../js/firebase-config.js";
+
+    const auth = getAuth();
+    const totalExercisesPerCategory = {
+      dribling: 3,
+      aruncari: 3,
+      aparare: 3,
+      conditie: 3
+    };
+
+    onAuthStateChanged(auth, async (user) => {
+      const userInfo = document.getElementById("user-info");
+      if (!user) {
+        userInfo.textContent = "🔒 Nu ești autentificat";
+        return;
+      }
+
+      userInfo.textContent = `👋 Salut, ${user.email}`;
+      const progresRef = doc(db, "progres", user.uid);
+      const snapshot = await getDoc(progresRef);
+      const data = snapshot.exists() ? snapshot.data() : {};
+
+      const progressValues = {};
+      Object.keys(totalExercisesPerCategory).forEach(categorie => {
+        const total = totalExercisesPerCategory[categorie];
+        const exercises = data[categorie] || {};
+        const completed = Object.values(exercises).filter(val => val === true).length;
+        progressValues[categorie] = total > 0 ? Math.round((completed / total) * 100) : 0;
+      });
+
+      const isDarkMode = document.body.classList.contains("dark-mode");
+      const ctx = document.getElementById('progressChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Dribling', 'Aruncări', 'Apărare', 'Condiție'],
+          datasets: [{
+            label: 'Progres (%)',
+            data: [
+              progressValues.dribling,
+              progressValues.aruncari,
+              progressValues.aparare,
+              progressValues.conditie
+            ],
+            backgroundColor: ['#FF7F11', '#3B82F6', '#10B981', '#F59E0B'],
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: isDarkMode ? '#333' : '#fff',
+              titleColor: isDarkMode ? '#fff' : '#000',
+              bodyColor: isDarkMode ? '#fff' : '#000',
+              callbacks: { label: ctx => `${ctx.raw}%` }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100,
+              ticks: {
+                color: isDarkMode ? '#f0f0f0' : '#333'
+              },
+              title: {
+                display: true,
+                text: 'Procent',
+                color: isDarkMode ? '#f0f0f0' : '#333'
+              }
+            },
+            x: {
+              ticks: {
+                color: isDarkMode ? '#f0f0f0' : '#333'
+              }
+            }
+          }
+        }
+      });
+
+      // Export CSV
+      document.getElementById("export-btn").addEventListener("click", () => {
+        const csvContent = "Categorie,Progres (%)\n" +
+          `Dribling,${progressValues.dribling}\n` +
+          `Aruncări,${progressValues.aruncari}\n` +
+          `Apărare,${progressValues.aparare}\n` +
+          `Condiție,${progressValues.conditie}`;
+
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", "progres_baschet.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+    });
+  </script>
+</body>
+</html>
