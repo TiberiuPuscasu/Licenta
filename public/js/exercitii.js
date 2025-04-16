@@ -4,6 +4,14 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth
 
 const auth = getAuth();
 
+// ✅ Definim câte exerciții sunt în fiecare categorie
+const TOTAL_EXERCISES_PER_CATEGORY = {
+    dribling: 3,
+    aruncari: 3,
+    aparare: 3,
+    conditie: 3
+};
+
 // Salvarea progresului utilizatorului
 export async function saveProgress(checkbox, exerciseKey, categorie) {
     const user = auth.currentUser;
@@ -27,7 +35,7 @@ export async function saveProgress(checkbox, exerciseKey, categorie) {
     await setDoc(progresRef, progresFirestore);
     console.log(`✅ Progres salvat: ${categorie}/${exerciseKey} = ${checkbox.checked}`);
 
-    updateProgressDisplay(); // 👉 Afișează progresul TOTAL
+    updateProgressDisplay(); // Actualizează procentul
 }
 
 // Încărcarea progresului și bifarea checkbox-urilor
@@ -50,12 +58,11 @@ export async function loadCheckboxState(categorie) {
         });
     });
 
-    updateProgressDisplay(); // 👉 Afișează progresul TOTAL
-
+    updateProgressDisplay(); // Actualizează procentul
     return progresCategorie;
 }
 
-// ✅ Afișează progresul total exact ca în dashboard
+// Afișarea progresului într-un element cu id "progress-percentage"
 function updateProgressDisplay() {
     calculateTotalProgress().then((total) => {
         const display = document.getElementById("progress-percentage");
@@ -65,7 +72,7 @@ function updateProgressDisplay() {
     });
 }
 
-// Calcularea progresului total pentru dashboard și paginile individuale
+// ✅ Calculare corectă a progresului total, chiar și pentru useri noi
 export async function calculateTotalProgress() {
     const user = auth.currentUser;
     if (!user) {
@@ -81,10 +88,13 @@ export async function calculateTotalProgress() {
     let totalExercises = 0;
     let completedExercises = 0;
 
-    for (const categorie in progresFirestore) {
-        const exercises = progresFirestore[categorie];
-        totalExercises += Object.keys(exercises).length;
-        completedExercises += Object.values(exercises).filter(val => val === true).length;
+    for (const categorie in TOTAL_EXERCISES_PER_CATEGORY) {
+        const expectedTotal = TOTAL_EXERCISES_PER_CATEGORY[categorie];
+        const userProgress = progresFirestore[categorie] || {};
+        const completate = Object.values(userProgress).filter(val => val === true).length;
+
+        totalExercises += expectedTotal;
+        completedExercises += completate;
     }
 
     return totalExercises > 0 ? Math.round((completedExercises / totalExercises) * 100) : 0;

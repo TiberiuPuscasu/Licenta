@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Medaliile Tale</title>
+  <link rel="stylesheet" href="../css/styles.css" />
+</head>
+<body class="exercise-page">
+  <button id="dark-mode-toggle">🌙</button>
+  <div class="container fade-in">
+    <h1>🏅 Medaliile Tale</h1>
+    <p>Vezi ce progres ai făcut și ce medalii ai câștigat!</p>
+
+    <div id="medals-container" class="badge-container">
+      <!-- Medaliile vor fi generate aici din JS -->
+    </div>
+
+    <button id="back" onclick="window.location.href='../dashboard.html'">Înapoi la Dashboard</button>
+  </div>
+
+  <script src="/js/dark-mode.js"></script>
+  <script type="module">
+
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+    import { db } from "../js/firebase-config.js";
+    import { calculateTotalProgress } from "../js/exercitii.js";
+
+    const auth = getAuth();
+
+    const totalExercisesPerCategory = {
+      dribling: 3,
+      aruncari: 3,
+      aparare: 3,
+      conditie: 3
+    };
+
+    function getMedalEmoji(percent) {
+      if (percent === 100) return "🥇 Aur";
+      if (percent >= 50) return "🥈 Argint";
+      if (percent > 0) return "🥉 Bronz";
+      return "❌ Nicio medalie";
+    }
+
+    function createMedalCard(title, percent, emoji) {
+      return `
+        <div class="badge-card">
+          <h3>${title}</h3>
+          <p>Progres: ${percent}%</p>
+          <p> ${emoji}</p>
+        </div>
+      `;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) return;
+
+      const container = document.getElementById("medals-container");
+      const userUID = user.uid;
+      const progresRef = doc(db, "progres", userUID);
+      const snapshot = await getDoc(progresRef);
+      const data = snapshot.exists() ? snapshot.data() : {};
+
+      // Categorii
+      for (const categorie in totalExercisesPerCategory) {
+        const total = totalExercisesPerCategory[categorie];
+        const userProgress = data[categorie] || {};
+        const completed = Object.values(userProgress).filter(val => val === true).length;
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+        const medal = getMedalEmoji(percent);
+
+        container.innerHTML += createMedalCard(categorie.charAt(0).toUpperCase() + categorie.slice(1), percent, medal);
+      }
+
+      // Progres total
+      const totalProgress = await calculateTotalProgress();
+      const totalMedal = getMedalEmoji(totalProgress);
+      container.innerHTML += createMedalCard("Progres Total", totalProgress, totalMedal);
+    });
+  </script>
+
+  <style>
+    .badge-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .badge-card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    body.dark-mode .badge-card {
+      background: #1e1e1e;
+      color: #f0f0f0;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+  </style>
+</body>
+</html>

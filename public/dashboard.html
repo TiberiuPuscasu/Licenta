@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <button id="dark-mode-toggle">🌙 Dark Mode</button>
+  <!-- Butonul de Dark Mode -->
+  <button id="dark-mode-toggle">🌙</button>
+
+  <!-- Afișare utilizator logat -->
+  <div id="user-info">Autentificare...</div>
+
+  <!-- Afișare medalii obtinute -->
+  <button id="medals-btn" onclick="location.href='medalii.html'">🏅 Medaliile Mele</button>
+
 
   <div class="container">
     <h1>BINE AI VENIT!</h1>
@@ -89,14 +97,14 @@
     }
 
     onAuthStateChanged(auth, async (user) => {
+      const userInfo = document.getElementById("user-info");
+
       if (user) {
-        console.log("Utilizator autentificat:", user.uid);
+        userInfo.textContent = `👋 Salut, ${user.email}`;
         await updateCategoryProgress(user);
         await updateTotalProgress();
-        setInterval(() => updateCategoryProgress(user), 5000);
-        setInterval(updateTotalProgress, 5000);
       } else {
-        console.error("Niciun utilizator autentificat!");
+        userInfo.textContent = "🔒 Nu ești autentificat";
       }
     });
   </script>
