@@ -530,6 +530,40 @@ body.dark-mode #exercise-details {
     color: #fff;
   }
   
+  /* Toasturi(mesaje) pentru login/register */
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #2ecc71, #27ae60); /* verde = succes */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+    font-weight: bold;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .toast.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  
+  .toast.error {
+    background: linear-gradient(135deg, #e74c3c, #c0392b); /* roșu = eroare */
+  }
+  
+  .toast.info {
+    background: linear-gradient(135deg, #f39c12, #e67e22); /* galben = informativ */
+  }
+  
+  .toast.hidden {
+    display: none;
+  }
+  
   
 /* ======== RESPONSIVE ======== */
 @media (max-width: 768px) {

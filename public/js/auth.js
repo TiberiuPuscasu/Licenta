@@ -6,6 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const registerBtn = document.getElementById("register-btn");
     const logoutBtn = document.getElementById("logout-btn");
 
+    // ✅ Toast Notification (Notificare Toast)
+    function showToast(message, type = "success") {
+        const toast = document.getElementById("toast");
+        if (!toast) return;
+        toast.textContent = message;
+        toast.className = `toast show ${type}`;
+
+        setTimeout(() => {
+            toast.className = "toast";
+        }, 3000);
+    }
+
     // ✅ Login (Autentificare)
     if (loginBtn) {
         loginBtn.addEventListener("click", () => {
@@ -14,10 +26,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             signInWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    alert("Autentificat cu succes!");
-                    window.location.href = "dashboard.html";
+                    showToast("Autentificat cu succes!", "success");
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 1000);
                 })
-                .catch(error => alert(error.message));
+                .catch(error => showToast(error.message, "error"));
         });
     }
 
@@ -29,10 +43,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
             createUserWithEmailAndPassword(auth, email, password)
                 .then(() => {
-                    alert("Cont creat cu succes!");
-                    window.location.href = "dashboard.html";
+                    showToast("Cont creat cu succes!", "success");
+                    setTimeout(() => {
+                        window.location.href = "dashboard.html";
+                    }, 1000);
                 })
-                .catch(error => alert(error.message));
+                .catch(error => showToast(error.message, "error"));
         });
     }
 
@@ -40,10 +56,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (logoutBtn) {
         logoutBtn.addEventListener("click", () => {
             signOut(auth).then(() => {
-                alert("Te-ai deconectat cu succes!");
-                window.location.href = "login.html"; // Redirecționare la pagina de login
+                showToast("Te-ai deconectat cu succes!", "success");
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 1000);
             }).catch(error => {
-                alert("Eroare la delogare: " + error.message);
+                showToast("Eroare la delogare: " + error.message, "error");
             });
         });
     }
