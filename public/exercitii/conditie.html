@@ -25,11 +25,11 @@
       <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
 
       <div id="exercise-checkbox-container"></div>
-      <button id="close-exercise">Închide</button>
+      <button id="close-exercise">❌ Închide</button>
     </div>
 
     <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
-    <button id="back" onclick="window.location.href='../dashboard.html'">Înapoi la Dashboard</button>
+    <button id="back" onclick="window.location.href='../dashboard.html'">⬅️ Înapoi la Dashboard</button>
   </div>
 
   <script src="/js/dark-mode.js"></script>
@@ -97,8 +97,12 @@
           if (cb) {
             cb.checked = userProgress[key] === true;
             cb.addEventListener("change", () => {
-              saveProgress(cb, key, categorie);
-            });
+                  saveProgress(cb, key, categorie);
+                    if (cb.checked) {
+                      showToast("✔️ Completat!");
+                    }
+});
+
           }
 
           loadCheckboxState(categorie); // actualizează procentul
@@ -114,6 +118,30 @@
     onAuthStateChanged(auth, (user) => {
       if (user) {
         loadCheckboxState(categorie);
+      }
+    });
+  </script>
+  <script>
+    function showToast(message = "✔️ Completat!") {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+  
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 2500);
+    }
+  
+    // Așteaptă ca DOM-ul să fie complet încărcat
+    document.addEventListener("DOMContentLoaded", function () {
+      const checkbox = document.querySelector('#exercise-checkbox-container input[type="checkbox"]');
+  
+      if (checkbox) {
+        checkbox.addEventListener("change", function () {
+          if (this.checked) {
+            showToast(); // ✔️ Afișează toast
+          }
+        });
       }
     });
   </script>

@@ -6,7 +6,7 @@
   <title>Dashboard</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
-<body>
+<body class="dashboard-page">
   <!-- Butonul de Dark Mode -->
   <!-- Butonul de Dark Mode -->
   <button id="dark-mode-toggle" style="position: fixed; top: 10px; right: 20px; z-index: 9999;">🌙</button>
@@ -27,12 +27,25 @@
     <p>Alege o categorie de exerciții pentru a începe antrenamentul.</p>
 
     <h2>Categorii de exerciții</h2>
-    <div class="category-container">
-      <button class="category-btn" onclick="location.href='exercitii/dribling.html'">Dribling</button>
-      <button class="category-btn" onclick="location.href='exercitii/aruncari.html'">Aruncări</button>
-      <button class="category-btn" onclick="location.href='exercitii/aparare.html'">Apărare</button>
-      <button class="category-btn" onclick="location.href='exercitii/conditie.html'">Condiție fizică</button>
+    <div class="category-cards">
+      <div class="card" onclick="location.href='exercitii/dribling.html'">
+        <img src="img/dribble-icon.png" alt="Dribling">
+        <h3>Dribling</h3>
+      </div>
+      <div class="card" onclick="location.href='exercitii/aruncari.html'">
+        <img src="img/shoot-icon.png" alt="Aruncări">
+        <h3>Aruncări</h3>
+      </div>
+      <div class="card" onclick="location.href='exercitii/aparare.html'">
+        <img src="img/defense-icon.png" alt="Apărare">
+        <h3>Apărare</h3>
+      </div>
+      <div class="card" onclick="location.href='exercitii/conditie.html'">
+        <img src="img/fitness-icon.png" alt="Condiție fizică">
+        <h3>Condiție fizică</h3>
+      </div>
     </div>
+    
 
     <h2>Progresul tău</h2>
     <div class="progress-container">
