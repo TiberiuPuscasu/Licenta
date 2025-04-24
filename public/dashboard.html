@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body class="dashboard-page">
+  <!-- ✅ Toast AI Recommendation -->
+  <div id="ai-toast" class="ai-toast hidden"></div>
   <!-- Butonul de Dark Mode -->
   <!-- Butonul de Dark Mode -->
   <button id="dark-mode-toggle" style="position: fixed; top: 10px; right: 20px; z-index: 9999;">🌙</button>
@@ -69,10 +71,11 @@
     </div>
 
     <button id="logout-btn" class="category-btn">Log out</button>
+   <!--<button id="ai-chat-btn">🧠 Întreabă AI-ul!</button> -->   
   </div>
 
   <!-- Scripturi -->
-  <script src="js/dashboard.js"></script>
+  <script type="module" src="/js/dashboard.js"></script>
   <script type="module" src="js/auth.js"></script>
   <script src="js/dark-mode.js"></script>
 
@@ -128,5 +131,13 @@
       }
     });
   </script>
+  <!-- ✅ Secțiune AI Q&A -->
+<div class="ai-qa-container">
+  <h2>🤖 Întreabă AI-ul despre exerciții</h2>
+  <input type="text" id="ai-question" placeholder="Ex: Câte calorii ard la 30 minute de alergat?" />
+  <button id="ai-submit">Trimite întrebare</button>
+  <div id="ai-answer" class="ai-answer hidden"></div>
+</div>
+
 </body>
 </html>
