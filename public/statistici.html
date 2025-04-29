@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Statistici</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" type="image/png" href="img/Logo.png">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body>
-  <button id="dark-mode-toggle">🌙</button>
-  <div id="user-info">Autentificare...</div>
+<body class="dashboard-layout">
 
-  <div class="container">
-    <h1>📊 Statistici Progres</h1>
-    <canvas id="progressChart" width="400" height="200"></canvas>
-    <br>
-    <button id="export-btn" class="category-btn">⬇️ Exportă Progres (CSV)</button>
-    <br><br>
-    <button onclick="location.href='dashboard.html'" class="category-btn">🔙 Înapoi la Dashboard</button>
-  </div>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2 class="logo">🏀 BASKET</h2>
+    <nav class="nav-links">
+      <button onclick="location.href='medalii.html'">🥇 Medaliile Mele</button>
+      <button onclick="location.href='statistici.html'">📊 Progresul Meu</button>
+      <button onclick="location.href='dashboard.html'">🏠 Dashboard</button>
+      <button id="logout-btn">🚪 Log out</button>
+    </nav>
+  </aside>
 
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="topbar">
+      <div id="user-info">Autentificare...</div>
+      <button id="dark-mode-toggle">🌙</button>
+    </header>
+
+    <section class="content">
+      <h1>📊 Statistici Progres</h1>
+      <canvas id="progressChart" width="400" height="200"></canvas>
+
+      <br><br>
+      <button id="export-btn" class="chart-btn">⬇️ Exportă Progres (CSV)</button>
+      <p>Progresul tău în fiecare categorie de exerciții este reprezentat grafic mai sus. Apasă pe butonul de mai sus pentru a descărca un fișier CSV cu detalii despre progresul tău.</p>
+    </section>
+  </main>
+
+  <!-- Scripts -->
   <script src="js/dark-mode.js"></script>
+  <script type="module" src="js/auth.js"></script>
   <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
@@ -42,6 +62,7 @@
       }
 
       userInfo.textContent = `👋 Salut, ${user.email}`;
+
       const progresRef = doc(db, "progres", user.uid);
       const snapshot = await getDoc(progresRef);
       const data = snapshot.exists() ? snapshot.data() : {};
@@ -105,14 +126,12 @@
         }
       });
 
-      // Export CSV
       document.getElementById("export-btn").addEventListener("click", () => {
         const csvContent = "Categorie,Progres (%)\n" +
           `Dribling,${progressValues.dribling}\n` +
           `Aruncări,${progressValues.aruncari}\n` +
           `Apărare,${progressValues.aparare}\n` +
           `Condiție,${progressValues.conditie}`;
-
         const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");

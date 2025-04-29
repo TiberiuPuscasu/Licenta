@@ -3,34 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Condiție Fizică - Exerciții</title>
+  <title>Condiție fizică - Exerciții</title>
   <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="icon" type="image/png" href="img/Logo.png">
 </head>
-<body class="exercise-page">
-  <button id="dark-mode-toggle">🌙 Dark Mode</button>
+<body class="dashboard-layout exercise-page">
 
-  <div class="container fade-in">
-    <h1>Condiție Fizică - Crește-ți rezistența</h1>
-    <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
+  <aside class="sidebar">
+    <h2 class="logo">🏀 BASKET</h2>
+    <nav class="nav-links">
+      <button onclick="location.href='../medalii.html'">🥇 Medaliile Mele</button>
+      <button onclick="location.href='../statistici.html'">📊 Progresul Meu</button>
+      <button onclick="location.href='../dashboard.html'">🏠 Dashboard</button>
+      <button id="logout-btn">🚪 Log out</button>
+    </nav>
+  </aside>
 
-    <div class="exercise-list">
-      <button class="exercise-btn" data-exercise="conditie1">Sprinturi scurte</button>
-      <button class="exercise-btn" data-exercise="conditie2">Antrenament HIIT</button>
-      <button class="exercise-btn" data-exercise="conditie3">Exerciții de rezistență</button>
-    </div>
+  <main class="main-content">
+    <header class="topbar">
+      <div id="user-info">Autentificare...</div>
+      <button id="dark-mode-toggle">🌙</button>
+    </header>
 
-    <div id="exercise-details" class="hidden">
-      <h2 id="exercise-title"></h2>
-      <p id="exercise-description"></p>
-      <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
+    <section class="content">
+      <h1>Condiție Fizică - Crește-ți rezistența</h1>
+      <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
 
-      <div id="exercise-checkbox-container"></div>
-      <button id="close-exercise">❌ Închide</button>
-    </div>
+      <div class="exercise-list">
+        <button class="exercise-btn" data-exercise="conditie1">Sprinturi scurte</button>
+        <button class="exercise-btn" data-exercise="conditie2">Alergare în trepte</button>
+        <button class="exercise-btn" data-exercise="conditie3">Circuit cardio</button>
+      </div>
 
-    <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
-    <button id="back" onclick="window.location.href='../dashboard.html'">⬅️ Înapoi la Dashboard</button>
-  </div>
+      <div id="exercise-details" class="hidden">
+        <h2 id="exercise-title"></h2>
+        <p id="exercise-description"></p>
+        <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
+        <div id="exercise-checkbox-container"></div>
+        <button id="close-exercise" class="chart-btn">❌ Închide</button>
+      </div>
+
+      <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
+      <button id="back" onclick="location.href='../dashboard.html'" class="chart-btn">⬅️ Înapoi la Dashboard</button>
+    </section>
+  </main>
+
+  <div id="toast" class="toast">✔️ Completat!</div>
 
   <script src="/js/dark-mode.js"></script>
   <script type="module">
@@ -42,21 +60,30 @@
     const auth = getAuth();
     const categorie = "conditie";
 
+    onAuthStateChanged(auth, (user) => {
+  const userInfo = document.getElementById("user-info");
+  if (user) {
+    userInfo.textContent = `👋 Salut, ${user.email}`;
+  } else {
+    userInfo.textContent = "🔒 Nu ești autentificat";
+  }
+});
+
     const exercises = {
       conditie1: {
         title: "Sprinturi scurte",
-        description: "Exersează sprinturi de 10-15 metri pentru a-ți îmbunătăți viteza și explozia.",
-        video: "https://www.youtube.com/embed/EXEMPLU_C1"
+        description: "Execută sprinturi de 10-20m cu pauze scurte.",
+        video: "https://www.youtube.com/embed/EXAMPLE1"
       },
       conditie2: {
-        title: "Antrenament HIIT",
-        description: "Încearcă o sesiune de High Intensity Interval Training pentru rezistență cardiovasculară.",
-        video: "https://www.youtube.com/embed/EXEMPLU_C2"
+        title: "Alergare în trepte",
+        description: "Aleargă pe trepte pentru a-ți crește anduranța.",
+        video: "https://www.youtube.com/embed/EXAMPLE2"
       },
       conditie3: {
-        title: "Exerciții de rezistență",
-        description: "Lucrează serii mai lungi pentru a-ți dezvolta anduranța în meci.",
-        video: "https://www.youtube.com/embed/EXEMPLU_C3"
+        title: "Circuit cardio",
+        description: "Combină exerciții de intensitate mare într-un circuit rapid.",
+        video: "https://www.youtube.com/embed/EXAMPLE3"
       }
     };
 
@@ -87,25 +114,19 @@
 
         onAuthStateChanged(auth, async (user) => {
           if (!user) return;
-
           const progresRef = doc(db, "progres", user.uid);
           const snapshot = await getDoc(progresRef);
           const data = snapshot.exists() ? snapshot.data() : {};
           const userProgress = data[categorie] || {};
-
           const cb = document.getElementById(key);
           if (cb) {
             cb.checked = userProgress[key] === true;
+            loadCheckboxState(categorie);
             cb.addEventListener("change", () => {
-                  saveProgress(cb, key, categorie);
-                    if (cb.checked) {
-                      showToast("✔️ Completat!");
-                    }
-});
-
+              saveProgress(cb, key, categorie);
+              if (cb.checked) showToast("✔️ Completat!");
+            });
           }
-
-          loadCheckboxState(categorie); // actualizează procentul
         });
       });
     });
@@ -116,34 +137,18 @@
     });
 
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        loadCheckboxState(categorie);
-      }
+      if (user) loadCheckboxState(categorie);
     });
   </script>
+
   <script>
     function showToast(message = "✔️ Completat!") {
       const toast = document.getElementById("toast");
       toast.textContent = message;
       toast.classList.add("show");
-  
-      setTimeout(() => {
-        toast.classList.remove("show");
-      }, 2500);
+      setTimeout(() => toast.classList.remove("show"), 2500);
     }
-  
-    // Așteaptă ca DOM-ul să fie complet încărcat
-    document.addEventListener("DOMContentLoaded", function () {
-      const checkbox = document.querySelector('#exercise-checkbox-container input[type="checkbox"]');
-  
-      if (checkbox) {
-        checkbox.addEventListener("change", function () {
-          if (this.checked) {
-            showToast(); // ✔️ Afișează toast
-          }
-        });
-      }
-    });
   </script>
+
 </body>
 </html>

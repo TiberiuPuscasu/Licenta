@@ -5,80 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard</title>
   <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" type="image/png" href="img/Logo.png">
 </head>
-<body class="dashboard-page">
-  <!-- ✅ Toast AI Recommendation -->
+<body class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+    <h2 class="logo-text">SWISH PLAN</h2>
+    <nav class="nav-links">
+      <button onclick="location.href='medalii.html'">🥇 Medaliile Mele</button>
+      <button onclick="location.href='statistici.html'">📊 Progresul Meu</button>
+      <button id="logout-btn">🚪 Log out</button>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <!-- HEADER -->
+    <header class="topbar">
+      <div id="user-info">Autentificare...</div>
+      <button id="dark-mode-toggle">🌙</button>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <section class="content">
+      <h1>Bine ai venit!</h1>
+      <p>Alege o categorie de exerciții pentru a începe antrenamentul.</p>
+
+      <!-- CATEGORIES -->
+      <h2>Categorii de exerciții</h2>
+      <div class="category-cards">
+        <div class="card" onclick="location.href='exercitii/dribling.html'">
+          <img src="img/dribble-icon.png" alt="Dribling">
+          <h3>Dribling</h3>
+        </div>
+        <div class="card" onclick="location.href='exercitii/aruncari.html'">
+          <img src="img/shoot-icon.png" alt="Aruncări">
+          <h3>Aruncări</h3>
+        </div>
+        <div class="card" onclick="location.href='exercitii/aparare.html'">
+          <img src="img/defense-icon.png" alt="Apărare">
+          <h3>Apărare</h3>
+        </div>
+        <div class="card" onclick="location.href='exercitii/conditie.html'">
+          <img src="img/fitness-icon.png" alt="Condiție fizică">
+          <h3>Condiție Fizică</h3>
+        </div>
+      </div>
+
+      <!-- PROGRESS -->
+      <h2>Progresul Tău</h2>
+      <div class="progress-container">
+        <p>Dribling</p>
+        <progress id="progress-dribling" value="0" max="100"></progress>
+
+        <p>Aruncări</p>
+        <progress id="progress-aruncari" value="0" max="100"></progress>
+
+        <p>Apărare</p>
+        <progress id="progress-aparare" value="0" max="100"></progress>
+
+        <p>Condiție Fizică</p>
+        <progress id="progress-conditie" value="0" max="100"></progress>
+      </div>
+
+      <h2>Progres Total</h2>
+      <div class="progress-container">
+        <p><span id="total-progress-text">0%</span> completat</p>
+        <progress id="total-progress-bar" value="0" max="100"></progress>
+      </div>
+
+      <!-- AI SECTION -->
+      <div class="ai-qa-container">
+        <h2>🤖 Întreabă AI-ul</h2>
+        <input type="text" id="ai-question" placeholder="Ex: Câte calorii ard la 30 minute de alergat?" />
+        <button id="ai-submit">Trimite întrebare</button>
+        <div id="ai-answer" class="ai-answer hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- TOAST -->
   <div id="ai-toast" class="ai-toast hidden"></div>
-  
-  <!-- Butonul de Dark Mode -->
-  <button id="dark-mode-toggle" style="position: fixed; top: 10px; right: 20px; z-index: 9999;">🌙</button>
 
-  <!-- Afișare utilizator logat -->
-  <div id="user-info">Autentificare...</div>
-
-  <!-- Afișare medalii obtinute -->
-  <button id="medals-btn" onclick="location.href='medalii.html'">🏅 Medaliile Mele</button>
-
-  <!-- Buton nou pentru statistici -->
-  <button id="stats-btn" onclick="location.href='statistici.html'">📊 Graficul progresului</button>
-  
-  
-
-  <div class="container">
-    <h1>BINE AI VENIT!</h1>
-    <p>Alege o categorie de exerciții pentru a începe antrenamentul.</p>
-
-    <h2>Categorii de exerciții</h2>
-    <div class="category-cards">
-      <div class="card" onclick="location.href='exercitii/dribling.html'">
-        <img src="img/dribble-icon.png" alt="Dribling">
-        <h3>Dribling</h3>
-      </div>
-      <div class="card" onclick="location.href='exercitii/aruncari.html'">
-        <img src="img/shoot-icon.png" alt="Aruncări">
-        <h3>Aruncări</h3>
-      </div>
-      <div class="card" onclick="location.href='exercitii/aparare.html'">
-        <img src="img/defense-icon.png" alt="Apărare">
-        <h3>Apărare</h3>
-      </div>
-      <div class="card" onclick="location.href='exercitii/conditie.html'">
-        <img src="img/fitness-icon.png" alt="Condiție fizică">
-        <h3>Condiție fizică</h3>
-      </div>
-    </div>
-    
-
-    <h2>Progresul tău</h2>
-    <div class="progress-container">
-      <p>Dribling</p>
-      <progress id="progress-dribling" value="0" max="100"></progress>
-
-      <p>Aruncări</p>
-      <progress id="progress-aruncari" value="0" max="100"></progress>
-
-      <p>Apărare</p>
-      <progress id="progress-aparare" value="0" max="100"></progress>
-
-      <p>Condiție fizică</p>
-      <progress id="progress-conditie" value="0" max="100"></progress>
-    </div>
-
-    <h2>Progres Total</h2>
-    <div class="progress-container">
-      <p><span id="total-progress-text">0%</span> completat</p>
-      <progress id="total-progress-bar" value="0" max="100"></progress>
-    </div>
-
-    <button id="logout-btn" class="category-btn">Log out</button>
-   <!--<button id="ai-chat-btn">🧠 Întreabă AI-ul!</button> -->   
-  </div>
-
-  <!-- Scripturi -->
+  <!-- SCRIPTS -->
   <script type="module" src="/js/dashboard.js"></script>
   <script type="module" src="js/auth.js"></script>
   <script src="js/dark-mode.js"></script>
 
+  <!-- FIREBASE PROGRESS SCRIPT -->
   <script type="module">
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
@@ -86,25 +102,17 @@
     import { calculateTotalProgress } from "../js/exercitii.js";
 
     const auth = getAuth();
-
-    const totalExercisesPerCategory = {
-      dribling: 3,
-      aruncari: 3,
-      aparare: 3,
-      conditie: 3
-    };
+    const totalExercisesPerCategory = { dribling: 3, aruncari: 3, aparare: 3, conditie: 3 };
 
     async function updateCategoryProgress(user) {
       const progresRef = doc(db, "progres", user.uid);
       const snapshot = await getDoc(progresRef);
       const data = snapshot.exists() ? snapshot.data() : {};
-
       Object.keys(totalExercisesPerCategory).forEach(categorie => {
         const total = totalExercisesPerCategory[categorie];
         const exercises = data[categorie] || {};
         const completed = Object.values(exercises).filter(val => val === true).length;
         const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-
         const bar = document.getElementById(`progress-${categorie}`);
         if (bar) bar.value = percent;
       });
@@ -114,14 +122,12 @@
       const totalProgress = await calculateTotalProgress();
       const progressBar = document.getElementById("total-progress-bar");
       const progressText = document.getElementById("total-progress-text");
-
       if (progressBar) progressBar.value = totalProgress;
       if (progressText) progressText.textContent = `${totalProgress}%`;
     }
 
     onAuthStateChanged(auth, async (user) => {
       const userInfo = document.getElementById("user-info");
-
       if (user) {
         userInfo.textContent = `👋 Salut, ${user.email}`;
         await updateCategoryProgress(user);
@@ -131,13 +137,5 @@
       }
     });
   </script>
-  <!-- ✅ Secțiune AI Q&A -->
-<div class="ai-qa-container">
-  <h2>🤖 Întreabă AI-ul</h2>
-  <input type="text" id="ai-question" placeholder="Ex: Câte calorii ard la 30 minute de alergat?" />
-  <button id="ai-submit">Trimite întrebare</button>
-  <div id="ai-answer" class="ai-answer hidden"></div>
-</div>
-
 </body>
 </html>

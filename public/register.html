@@ -2,24 +2,34 @@
 <html lang="ro">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Înregistrare</title>
   <link rel="stylesheet" href="css/styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="img/Logo.png">
 </head>
 <body>
+  <!-- 🔔 Toast Message -->
+  <div id="toast" class="toast hidden">Mesaj aici</div>
 
-  <div class="form-container fade-in">
-    <h2>Înregistrare</h2>
-    
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Parolă" required />
-    <button id="register-btn">Înregistrează-te</button>
+  <!-- Layout -->
+  <div class="auth-container">
+    <div class="auth-info">
+      <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+      <h1>🎯 Alătură-te nouă!</h1>
+      <p>Contul tău îți oferă acces la exerciții personalizate, urmărirea progresului și câștigarea de medalii!</p>
+      <p>🔥 Startul tău într-un antrenament inteligent începe aici.</p>
+    </div>
 
-    <p class="register-link">Ai deja cont? <a href="login.html">Autentifică-te</a></p>
+    <div class="auth-form">
+      <h2>Înregistrare</h2>
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Parolă" required />
+      <button id="register-btn" type="button">Înregistrează-te</button>
+      <p>Ai deja cont? <a href="login.html">Autentifică-te</a></p>
+    </div>
   </div>
 
   <script type="module" src="js/auth.js"></script>
-  <script src="/js/dark-mode.js"></script>
 </body>
 </html>
