@@ -89,7 +89,7 @@ button:hover {
     width: 90%;
     max-width: 800px;
     margin: auto;
-    background: white;
+    background: rgb(229, 175, 121);
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
@@ -728,7 +728,7 @@ body.dashboard-page::before {
   }
   
   .card {
-    background: rgba(255, 255, 255, 0.9);
+    background:  rgb(229, 175, 121);
     backdrop-filter: blur(6px);
     border-radius: 16px;
     padding: 20px;
