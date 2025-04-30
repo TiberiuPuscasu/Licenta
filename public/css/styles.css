@@ -103,9 +103,10 @@ body.dashboard-layout {
 
 h1 {
   font-size: 24px;
-  color: #FF7F11;
+  color: #333; /* dark text for light mode */
   text-transform: uppercase;
   margin-bottom: 5px;
+  font-weight: bolder;
 }
 
 h2 {
@@ -122,7 +123,7 @@ h2 {
 }
 
 .card {
-  background: rgba(238, 232, 226, 0.692);
+  background: rgba(238, 232, 226, 0);
   backdrop-filter: blur(6px);
   padding: 20px;
   border-radius: 16px;
@@ -137,9 +138,13 @@ h2 {
 }
 
 .card img {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 10px;
+  width: 100px;
+  height: 100px;
+  margin-bottom: 12px;
+  object-fit: contain;
+  background-color: white; /* Optional: to remove checkered effect */
+  padding: 6px;
+  border-radius: 12px;
 }
 
 .card h3 {
@@ -271,11 +276,18 @@ body.dark-mode h2,
 body.dark-mode p, 
 body.dark-mode .ai-answer,
 body.dark-mode #user-info {
-  color: #f0f0f0;
+  color: #ffffff;
 }
 
 body.dark-mode .card {
   background: rgba(30, 30, 30, 0.85);
+}
+
+body.dark-mode .card img {
+  background-color: #333; /* Fundal întunecat */
+  filter: brightness(0.8); /* Reduce luminozitatea */
+  border: 1px solid #444; /* Adaugă o bordură subtilă */
+  transition: all 0.3s ease-in-out;
 }
 
 body.dark-mode .ai-qa-container {
@@ -618,19 +630,30 @@ body.dark-mode #exercise-checkbox-container label {
   background-color: #ef4444;
 }
 /* === LOGO === */
-.logo-img {
-  width: 80px;
-  margin: 0 auto;
-  display: block;
+.logo-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 5px;
+  border-radius: 8px;
 }
 
-.logo-text {
-  text-align: center;
+.logo-img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.logo-title {
   font-size: 18px;
   font-weight: 700;
-  margin-top: 10px;
   color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
+
 
 /* RESPONSIVE */
 @media (max-width: 768px) {
