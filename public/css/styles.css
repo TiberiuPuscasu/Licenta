@@ -1,4 +1,15 @@
 /* ========== DASHBOARD LAYOUT STRUCTURE ========== */
+@import "tailwindcss";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+@import "tailwindcss/base";
+@import "tailwindcss/forms"; 
+@import "tailwindcss/typography";
+@import "tailwindcss/aspect-ratio";
+@import "tailwindcss/line-clamp";
+
+
+
 body.dashboard-layout {
   display: flex;
   min-height: 100vh;
@@ -16,7 +27,7 @@ body.dashboard-layout {
   flex-direction: column;
   align-items: center;
   gap: 30px;
-  
+  border-radius: 22px;
 }
 
 .sidebar .logo {

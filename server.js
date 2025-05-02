@@ -23,7 +23,7 @@ app.post("/api/ai-qa", async (req, res) => {
         messages: [
           {
             role: "system",
-            content: "Ești un antrenor prietenos care răspunde la întrebări despre exerciții de baschet, fitness și sănătate.",
+            content: "Ești un antrenor prietenos care răspunde scurt si la obiect la întrebări despre exerciții de baschet, fitness și sănătate.",
           },
           {
             role: "user",

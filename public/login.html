@@ -29,10 +29,22 @@
       <input type="email" id="email" placeholder="Email" required />
       <input type="password" id="password" placeholder="Parolă" required />
       <button id="login-btn" type="button">Login</button>
+      <button id="google-login">Login with Google</button>
+<script type="module">
+    import { signInWithGoogle } from './firebase-config.js';
+
+    document.getElementById('google-login').addEventListener('click', async () => {
+        try {
+            const user = await signInWithGoogle();
+            alert(`Welcome, ${user.displayName}!`);
+        } catch (error) {
+            alert("Failed to sign in with Google.");
+        }
+    });
+</script>
       <p>Nu ai cont? <a href="register.html">Înregistrează-te</a></p>
     </div>
   </div>
-
   <script type="module" src="js/auth.js"></script>
 </body>
 </html>
