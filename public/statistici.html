@@ -10,16 +10,29 @@
 </head>
 <body class="dashboard-layout">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <h2 class="logo">🏀 BASKET</h2>
-    <nav class="nav-links">
-      <button onclick="location.href='medalii.html'">🥇 Medaliile Mele</button>
-      <button onclick="location.href='statistici.html'">📊 Progresul Meu</button>
-      <button onclick="location.href='dashboard.html'">🏠 Dashboard</button>
-      <button id="logout-btn">🚪 Log out</button>
+  <div class="menu-toggle" id="menu-toggle">☰</div>
+
+<div class="slide-menu hidden" id="slide-menu">
+  <div class="menu-content">
+    <span id="menu-close" class="menu-close">✕</span>
+    <div class="logo-block">
+      <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+      <span class="logo-title">SWISH PLAN</span>
+    </div>
+    <a href="dashboard.html" class="menu-dashboard-link">🏠 Dashboard</a>
+    <nav class="menu-links">
+      <a href="medalii.html">🥇 Medaliile Mele</a>
+      <a href="statistici.html">📊 Progresul Meu</a>
+      <a href="forgot-password.html">🔑 Resetare parolă</a>
+      <a href="unsubscribe.html">📤 Dezabonare</a>
+      <a href="about-me.html">👤 Despre Mine</a>
+      <a href="about-us.html">👥 Despre Noi</a>
+      <a href="#" onclick="copyInviteLink()">🤝 Invită un prieten</a>
+      <a href="#" id="logout-btn">🚪 Logout</a>
     </nav>
-  </aside>
+  </div>
+</div>
+
 
   <!-- Main Content -->
   <main class="main-content">
@@ -61,7 +74,12 @@
         return;
       }
 
-      userInfo.textContent = `👋 Salut, ${user.email}`;
+      const nameToShow = user.displayName 
+  ? user.displayName 
+  : user.email.split("@")[0];
+
+userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
+
 
       const progresRef = doc(db, "progres", user.uid);
       const snapshot = await getDoc(progresRef);
@@ -143,5 +161,27 @@
       });
     });
   </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggleBtn = document.getElementById("menu-toggle");
+      const menu = document.getElementById("slide-menu");
+      const closeBtn = document.getElementById("menu-close");
+  
+      toggleBtn.addEventListener("click", () => {
+        menu.classList.add("visible");
+      });
+  
+      closeBtn.addEventListener("click", () => {
+        menu.classList.remove("visible");
+      });
+    });
+  
+    function copyInviteLink() {
+      const link = window.location.origin;
+      navigator.clipboard.writeText(link);
+      alert("🔗 Link-ul a fost copiat în clipboard!");
+    }
+  </script>
+  
 </body>
 </html>

@@ -1,10 +1,2 @@
-sign in google
-username schimbat sus
-waffle / hamburger menu pt sidebar
-forgot password?
-unsubscribe
-about me
-about us
-invite a friend
-carusel la video-uri
+De facut html-urile din sidebar/menu
 

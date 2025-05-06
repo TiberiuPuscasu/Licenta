@@ -5,55 +5,68 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dribling - Exerciții</title>
   <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="icon" type="image/png" href="img/Logo1.png">
+  <link rel="icon" type="image/png" href="../img/Logo1.png">
 </head>
 <body class="dashboard-layout exercise-page">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <h2 class="logo">🏀 BASKET</h2>
-    <nav class="nav-links">
-      <button onclick="location.href='../medalii.html'">🥇 Medaliile Mele</button>
-      <button onclick="location.href='../statistici.html'">📊 Progresul Meu</button>
-      <button onclick="location.href='../dashboard.html'">🏠 Dashboard</button>
-      <button id="logout-btn">🚪 Log out</button>
-    </nav>
-  </aside>
-
-  <!-- Main -->
-  <main class="main-content">
-    <header class="topbar">
-      <div id="user-info">✔️ Completat!</div>
-      <button id="dark-mode-toggle">🌙</button>
-    </header>
-
-    <section class="content">
-      <h1>Dribling - Îmbunătățește-ți controlul mingii</h1>
-      <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
-
-      <div class="exercise-list">
-        <button class="exercise-btn" data-exercise="dribling1">Dribling cu mâna slabă</button>
-        <button class="exercise-btn" data-exercise="dribling2">Dribling în regim de viteză</button>
-        <button class="exercise-btn" data-exercise="dribling3">Dribling între picioare</button>
+  <div class="layout-grid">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo-block">
+        <img src="../img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+        <span class="logo-title">SWISH PLAN</span>
       </div>
+      <nav class="nav-links">
+        <button onclick="location.href='../dashboard.html'">🏠 Dashboard</button>
+        <button onclick="location.href='../medalii.html'">🥇 Medaliile Mele</button>
+        <button onclick="location.href='../statistici.html'">📊 Progresul Meu</button>
+        <button onclick="location.href='../forgot-password.html'">🔑 Resetare parolă</button>
+        <button onclick="location.href='../unsubscribe.html'">📤 Dezabonare</button>
+        <button onclick="location.href='../about-me.html'">👤 Despre Mine</button>
+        <button onclick="location.href='../about-us.html'">👥 Despre Noi</button>
+        <button onclick="copyInviteLink()">🤝 Invită un prieten</button>
+        <button id="logout-btn">🚪 Log out</button>
+      </nav>
+    </aside>
 
-      <div id="exercise-details" class="hidden">
-        <h2 id="exercise-title"></h2>
-        <p id="exercise-description"></p>
-        <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
-        <div id="exercise-checkbox-container"></div>
-        <button id="close-exercise" class="chart-btn">❌ Închide</button>
-      </div>
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <div id="user-info">🔄 Se încarcă...</div>
+        <button id="dark-mode-toggle">🌙</button>
+      </header>
 
-      <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
-      <button id="back" onclick="window.location.href='../dashboard.html'" class="chart-btn">⬅️ Înapoi la Dashboard</button>
-    </section>
-  </main>
+      <section class="content">
+        <h1>Dribling - Îmbunătățește-ți controlul mingii</h1>
+        <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
+
+        <div class="exercise-list">
+          <button class="exercise-btn" data-exercise="dribling1">Dribling cu mâna slabă</button>
+          <button class="exercise-btn" data-exercise="dribling2">Dribling în regim de viteză</button>
+          <button class="exercise-btn" data-exercise="dribling3">Dribling între picioare</button>
+        </div>
+
+        <div id="exercise-details" class="hidden">
+          <h2 id="exercise-title"></h2>
+          <p id="exercise-description"></p>
+          <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
+          <div id="exercise-checkbox-container"></div>
+          <button id="close-exercise" class="chart-btn">❌ Închide</button>
+        </div>
+
+        <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
+        <button id="back" onclick="window.location.href='../dashboard.html'" class="chart-btn">⬅️ Înapoi la Dashboard</button>
+      </section>
+    </main>
+  </div>
 
   <!-- Toast -->
   <div id="toast" class="toast">✔️ Completat!</div>
 
+  <!-- JS -->
   <script src="/js/dark-mode.js"></script>
+  <script src="../js/dashboard.js"></script>
+
   <script type="module">
     import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
@@ -64,33 +77,32 @@
     const categorie = "dribling";
 
     onAuthStateChanged(auth, (user) => {
-  const userInfo = document.getElementById("user-info");
-  if (user) {
-    userInfo.textContent = `👋 Salut, ${user.email}`;
-  } else {
-    userInfo.textContent = "🔒 Nu ești autentificat";
-  }
-});
-
+      const userInfo = document.getElementById("user-info");
+      if (user) {
+        const nameToShow = user.displayName || user.email.split("@")[0];
+        userInfo.textContent = `👋 Salut, ${nameToShow.toUpperCase()}`;
+      } else {
+        userInfo.textContent = "🔒 Nu ești autentificat";
+      }
+    });
 
     const exercises = {
-  dribling1: {
-    title: "Dribling cu mâna slabă",
-    description: "Exersează driblingul doar cu mâna pe care o folosești mai puțin.",
-    video: "https://www.youtube.com/embed/6XfT6gUHZCk"  // replace with real one
-  },
-  dribling2: {
-    title: "Dribling în regim de viteză",
-    description: "Aleargă și menține controlul mingii la viteză mare.",
-    video: "https://www.youtube.com/embed/T7T1WbohU7A"  // replace with real one
-  },
-  dribling3: {
-    title: "Dribling între picioare",
-    description: "Exersează trecerea mingii printre picioare pentru a îmbunătăți controlul.",
-    video: "https://www.youtube.com/embed/LH3VoWZ_fa4"  // replace with real one
-  }
-};
-
+      dribling1: {
+        title: "Dribling cu mâna slabă",
+        description: "Exersează driblingul doar cu mâna pe care o folosești mai puțin.",
+        video: "https://www.youtube.com/embed/6XfT6gUHZCk"
+      },
+      dribling2: {
+        title: "Dribling în regim de viteză",
+        description: "Aleargă și menține controlul mingii la viteză mare.",
+        video: "https://www.youtube.com/embed/T7T1WbohU7A"
+      },
+      dribling3: {
+        title: "Dribling între picioare",
+        description: "Exersează trecerea mingii printre picioare pentru a îmbunătăți controlul.",
+        video: "https://www.youtube.com/embed/LH3VoWZ_fa4"
+      }
+    };
 
     const detailsSection = document.getElementById("exercise-details");
     const titleElement = document.getElementById("exercise-title");
@@ -144,9 +156,7 @@
     onAuthStateChanged(auth, (user) => {
       if (user) loadCheckboxState(categorie);
     });
-  </script>
 
-  <script>
     function showToast(message = "✔️ Completat!") {
       const toast = document.getElementById("toast");
       toast.textContent = message;
@@ -154,6 +164,5 @@
       setTimeout(() => toast.classList.remove("show"), 2500);
     }
   </script>
-
 </body>
 </html>

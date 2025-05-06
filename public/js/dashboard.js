@@ -49,3 +49,25 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleBtn = document.getElementById("menu-toggle");
+  const menu = document.getElementById("slide-menu");
+  const closeBtn = document.getElementById("menu-close");
+
+  toggleBtn.addEventListener("click", () => {
+    menu.classList.add("visible");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    menu.classList.remove("visible");
+  });
+});
+
+function copyInviteLink() {
+  const link = window.location.origin;
+  navigator.clipboard.writeText(link);
+  alert("🔗 Link-ul a fost copiat în clipboard!");
+}
+
+

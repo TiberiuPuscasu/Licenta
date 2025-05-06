@@ -9,15 +9,29 @@
 </head>
 <body class="dashboard-layout exercise-page">
 
-  <aside class="sidebar">
-    <h2 class="logo">🏀 BASKET</h2>
-    <nav class="nav-links">
-      <button onclick="location.href='../medalii.html'">🥇 Medaliile Mele</button>
-      <button onclick="location.href='../statistici.html'">📊 Progresul Meu</button>
-      <button onclick="location.href='../dashboard.html'">🏠 Dashboard</button>
-      <button id="logout-btn">🚪 Log out</button>
-    </nav>
-  </aside>
+  <!-- Hamburger Menu -->
+<div class="hamburger-menu">
+  <button id="hamburger-toggle" aria-label="Toggle menu">☰</button>
+  <nav class="menu hidden" id="menu">
+    <div class="logo-block">
+      <img src="../img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+      <span class="logo-title">SWISH PLAN</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../dashboard.html">🏠 Dashboard</a></li>
+      <li><a href="../medalii.html">🥇 Medaliile Mele</a></li>
+      <li><a href="../statistici.html">📊 Progresul Meu</a></li>
+      <li><a href="../forgot-password.html">🔑 Resetare parolă</a></li>
+      <li><a href="../unsubscribe.html">📤 Dezabonare</a></li>
+      <li><a href="../about-me.html">👤 Despre Mine</a></li>
+      <li><a href="../about-us.html">👥 Despre Noi</a></li>
+      <li><a href="#" onclick="copyInviteLink()">🤝 Invită un prieten</a></li>
+      <li><button id="logout-btn">🚪 Log out</button></li>
+    </ul>
+  </nav>
+</div>
+
+  
 
   <main class="main-content">
     <header class="topbar">
@@ -63,11 +77,15 @@
     onAuthStateChanged(auth, (user) => {
   const userInfo = document.getElementById("user-info");
   if (user) {
-    userInfo.textContent = `👋 Salut, ${user.email}`;
+    const nameToShow = user.displayName 
+      ? user.displayName 
+      : user.email.split("@")[0];
+    userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
   } else {
     userInfo.textContent = "🔒 Nu ești autentificat";
   }
 });
+
 
     const exercises = {
       aruncari1: {
@@ -149,6 +167,7 @@
       setTimeout(() => toast.classList.remove("show"), 2500);
     }
   </script>
+<script src="../js/dashboard.js"></script>
 
 </body>
 </html>
