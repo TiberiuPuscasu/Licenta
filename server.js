@@ -52,7 +52,7 @@ app.post("/api/ai-qa", async (req, res) => {
 
 // ✅ Frontend
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public/login.html"));
+  res.sendFile(path.join(__dirname, "public/home.html"));
 });
 app.use(express.static("public"));
 

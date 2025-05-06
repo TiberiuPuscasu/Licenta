@@ -8,43 +8,43 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="img/Logo1.png">
 </head>
-<body>
-  <!-- 🔔 Toast Message -->
-  <div id="toast" class="toast hidden">Mesaj aici</div>
-
-  <!-- Layout -->
+<body class="auth-page">
   <div class="auth-container">
-    <div class="auth-info">
+    
+    <!-- LOGO PANEL -->
+    <div class="auth-logo">
       <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
-      <h1>🏀 Despre Aplicație</h1>
-      <p>Swish Plan este platforma ta digitală pentru antrenamente de baschet eficiente, interactive și adaptate nevoilor tale.</p>
-      <p>📈 Indiferent dacă ești începător sau avansat, aici găsești exerciții explicate pas cu pas, clipuri demonstrative și posibilitatea de a-ți urmări progresul în timp real.</p>
-      <p>🎯 Scopul nostru este să facem antrenamentele inteligente și accesibile pentru toți iubitorii de baschet, oriunde s-ar afla.</p>
-      <p>💡 Cu Swish Plan, fiecare sesiune de antrenament devine o oportunitate de a învăța și de a te dezvolta.</p>
+      
     </div>
 
-    <div class="auth-form">
-      <p>💪 Începe-ți călătoria sportivă cu Swish Plan și transformă-ți antrenamentele într-o experiență captivantă!</p>
+    <!-- FORMULAR AUTENTIFICARE -->
+    <div class="auth-form-only">
       <h2>Autentificare</h2>
+      <p>Începe-ți călătoria sportivă cu Swish Plan și transformă-ți antrenamentele într-o experiență captivantă!</p>
       <input type="email" id="email" placeholder="Email" required />
       <input type="password" id="password" placeholder="Parolă" required />
-      <button id="login-btn" type="button">Login</button>
-      <button id="google-login">Login with Google</button>
-<script type="module">
-    import { signInWithGoogle } from './firebase-config.js';
-
-    document.getElementById('google-login').addEventListener('click', async () => {
-        try {
-            const user = await signInWithGoogle();
-            alert(`Welcome, ${user.displayName}!`);
-        } catch (error) {
-            alert("Failed to sign in with Google.");
-        }
-    });
-</script>
+      <button id="login-btn" type="button">Autentifică-te</button>
       <p>Nu ai cont? <a href="register.html">Înregistrează-te</a></p>
+      <button id="google-login" class="chart-btn">🔐 Login cu Google</button>
     </div>
   </div>
+
+  <!-- Toast + Script -->
+  <div id="toast" class="toast hidden">Mesaj aici</div>
   <script type="module" src="js/auth.js"></script>
+  <script type="module">
+    import { signInWithGoogle } from './js/firebase-config.js';
+  
+    document.getElementById("google-login").addEventListener("click", async () => {
+      try {
+        const user = await signInWithGoogle();
+        alert(`Bun venit, ${user.displayName}!`);
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        alert("❌ Eroare la autentificarea cu Google.");
+      }
+    });
+  </script>
+  
 </body>
 </html>

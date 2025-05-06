@@ -8,23 +8,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="img/Logo1.png">
 </head>
-<body>
-  <!-- 🔔 Toast Message -->
-  <div id="toast" class="toast hidden">Mesaj aici</div>
-
-  <!-- Layout -->
+<body class="auth-page">
   <div class="auth-container">
-    <div class="auth-info">
+
+    <!-- LOGO STÂNGA -->
+    <div class="auth-logo">
       <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
-      <h1>🎯 Alătură-te nouă!</h1>
-      <p>Contul tău îți oferă acces la exerciții personalizate, urmărirea progresului și câștigarea de medalii!</p>
-      <p>🔥 Startul tău într-un antrenament inteligent începe aici.</p>
     </div>
 
-    <div class="auth-form">
-      <p>💪 Începe-ți călătoria sportivă cu Swish Plan și transformă-ți antrenamentele într-o experiență captivantă!</p>
-
+    <!-- FORMULAR ÎNREGISTRARE -->
+    <div class="auth-form-only">
       <h2>Înregistrare</h2>
+      <p>Începe-ți călătoria sportivă cu Swish Plan și transformă-ți antrenamentele într-o experiență captivantă!</p>
       <input type="email" id="email" placeholder="Email" required />
       <input type="password" id="password" placeholder="Parolă" required />
       <button id="register-btn" type="button">Înregistrează-te</button>
@@ -32,6 +27,7 @@
     </div>
   </div>
 
+  <div id="toast" class="toast hidden">Mesaj aici</div>
   <script type="module" src="js/auth.js"></script>
 </body>
 </html>
