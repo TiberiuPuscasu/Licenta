@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Despre Noi</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="img/Logo1.png" type="image/png">
+</head>
+<body class="dashboard-layout">
+
+  <aside class="sidebar">
+    <div class="logo-block">
+      <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+      <span class="logo-title">SWISH PLAN</span>
+    </div>
+    <nav class="nav-links">
+      <button onclick="location.href='dashboard.html'">🏠 Dashboard</button>
+      <button onclick="location.href='medalii.html'">🥇 Medaliile Mele</button>
+      <button onclick="location.href='statistici.html'">📊 Progresul Meu</button>
+      <button onclick="location.href='unsubscribe.html'">📤 Dezabonare</button>
+      <button onclick="location.href='about-me.html'">👤 Despre Mine</button>
+      <button onclick="location.href='about-us.html'">👥 Despre Noi</button>
+      <button onclick="copyInviteLink()">🤝 Invită un prieten</button>
+      <button id="logout-btn">🚪 Log out</button>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <header class="topbar">
+      <div id="user-info">👋</div>
+      <button id="dark-mode-toggle">🌙</button>
+    </header>
+
+    <section class="content">
+      <h1>👥 Despre Noi</h1>
+      <p>Swish Plan este o aplicație educațională concepută pentru sportivi și antrenori. Scopul nostru este să oferim o experiență digitală utilă în antrenamente, cu urmărirea progresului și resurse video utile.</p>
+    </section>
+  </main>
+
+  <script src="js/dark-mode.js"></script>
+  <script type="module" src="js/auth.js"></script>
+</body>
+</html>

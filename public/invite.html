@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invită un prieten</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="img/Logo1.png" type="image/png">
+</head>
+<body class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo-block">
+      <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+      <span class="logo-title">SWISH PLAN</span>
+    </div>
+    <nav class="nav-links">
+      <button onclick="location.href='dashboard.html'">🏠 Dashboard</button>
+      <button onclick="location.href='medalii.html'">🥇 Medaliile Mele</button>
+      <button onclick="location.href='statistici.html'">📊 Progresul Meu</button>
+      <button onclick="location.href='unsubscribe.html'">📤 Dezabonare</button>
+      <button onclick="location.href='about-me.html'">👤 Despre Mine</button>
+      <button onclick="location.href='about-us.html'">👥 Despre Noi</button>
+      <button onclick="location.href='invite.html'">🤝 Invită un prieten</button>
+      <button id="logout-btn">🚪 Log out</button>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header class="topbar">
+      <div id="user-info">👋</div>
+      <button id="dark-mode-toggle">🌙</button>
+    </header>
+
+    <section class="content">
+      <h1>🤝 Invită un prieten</h1>
+      <p>Distribuie aplicația Swish Plan și antrenați-vă împreună!</p>
+
+      <div class="invite-box">
+        <input
+          type="text"
+          id="invite-link"
+          value="https://swishplan.app/invite"
+          readonly
+        />
+        <button onclick="copyInviteLink()" class="chart-btn">📋 Copiază linkul</button>
+        <p id="copied-message" class="hidden" style="margin-top: 10px; color: green;">✔️ Copiat în clipboard!</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/dark-mode.js"></script>
+  <script type="module" src="js/auth.js"></script>
+  <script>
+    function copyInviteLink() {
+      const linkInput = document.getElementById("invite-link");
+      linkInput.select();
+      document.execCommand("copy");
+
+      const msg = document.getElementById("copied-message");
+      msg.classList.remove("hidden");
+      setTimeout(() => msg.classList.add("hidden"), 2500);
+    }
+  </script>
+</body>
+</html>

@@ -1029,6 +1029,68 @@ html, body {
   letter-spacing: 1px;
 }
 
+/* Layout principal */
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #d16a29, #e67e22);
+  padding: 1rem;
+  color: white;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  max-width: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.content {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Responsivitate */
+@media (max-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    min-height: auto;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+}
+
 
 /* RESPONSIVE */
 @media (max-width: 768px) {

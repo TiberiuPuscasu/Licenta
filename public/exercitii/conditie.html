@@ -3,68 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Condiție fizică - Exerciții</title>
+  <title>Condiție Fizică - Exerciții</title>
   <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="icon" type="image/png" href="img/Logo1.png">
+  <link rel="icon" type="image/png" href="../img/Logo1.png" />
 </head>
 <body class="dashboard-layout exercise-page">
-
-<!-- Hamburger Menu -->
-<div class="hamburger-menu">
-  <button id="hamburger-toggle" aria-label="Toggle menu">☰</button>
-  <nav class="menu hidden" id="menu">
-    <div class="logo-block">
-      <img src="../img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
-      <span class="logo-title">SWISH PLAN</span>
-    </div>
-    <ul class="nav-links">
-      <li><a href="../dashboard.html">🏠 Dashboard</a></li>
-      <li><a href="../medalii.html">🥇 Medaliile Mele</a></li>
-      <li><a href="../statistici.html">📊 Progresul Meu</a></li>
-      <li><a href="../forgot-password.html">🔑 Resetare parolă</a></li>
-      <li><a href="../unsubscribe.html">📤 Dezabonare</a></li>
-      <li><a href="../about-me.html">👤 Despre Mine</a></li>
-      <li><a href="../about-us.html">👥 Despre Noi</a></li>
-      <li><a href="#" onclick="copyInviteLink()">🤝 Invită un prieten</a></li>
-      <li><button id="logout-btn">🚪 Log out</button></li>
-    </ul>
-  </nav>
-</div>
-
-  
-
-  <main class="main-content">
-    <header class="topbar">
-      <div id="user-info">Autentificare...</div>
-      <button id="dark-mode-toggle">🌙</button>
-    </header>
-
-    <section class="content">
-      <h1>Condiție Fizică - Crește-ți rezistența</h1>
-      <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
-
-      <div class="exercise-list">
-        <button class="exercise-btn" data-exercise="conditie1">Sprinturi scurte</button>
-        <button class="exercise-btn" data-exercise="conditie2">Alergare în trepte</button>
-        <button class="exercise-btn" data-exercise="conditie3">Circuit cardio</button>
+  <div class="wrapper">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo-block">
+        <img src="../img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+        <span class="logo-title">SWISH PLAN</span>
       </div>
+      <nav class="nav-links">
+        <button onclick="location.href='../dashboard.html'">🏠 Dashboard</button>
+        <button onclick="location.href='../medalii.html'">🥇 Medaliile Mele</button>
+        <button onclick="location.href='../statistici.html'">📊 Progresul Meu</button>
+        <button onclick="location.href='../forgot-password.html'">🔑 Resetare parolă</button>
+        <button onclick="location.href='../unsubscribe.html'">📤 Dezabonare</button>
+        <button onclick="location.href='../about-me.html'">👤 Despre Mine</button>
+        <button onclick="location.href='../about-us.html'">👥 Despre Noi</button>
+        <button onclick="copyInviteLink()">🤝 Invită un prieten</button>
+        <button id="logout-btn">🚪 Log out</button>
+      </nav>
+    </aside>
 
-      <div id="exercise-details" class="hidden">
-        <h2 id="exercise-title"></h2>
-        <p id="exercise-description"></p>
-        <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
-        <div id="exercise-checkbox-container"></div>
-        <button id="close-exercise" class="chart-btn">❌ Închide</button>
-      </div>
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <div id="user-info">🔄 Se încarcă...</div>
+        <button id="dark-mode-toggle">🌙</button>
+      </header>
 
-      <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
-      <button id="back" onclick="location.href='../dashboard.html'" class="chart-btn">⬅️ Înapoi la Dashboard</button>
-    </section>
-  </main>
+      <section class="content">
+        <h1>Condiție Fizică - Îmbunătățește-ți rezistența</h1>
+        <p>Selectează un exercițiu pentru a vedea detaliile și videoclipul. Bifează după ce ai terminat!</p>
+
+        <div class="exercise-list">
+          <button class="exercise-btn" data-exercise="conditie1">Sprinturi scurte</button>
+          <button class="exercise-btn" data-exercise="conditie2">Sărituri pe loc</button>
+          <button class="exercise-btn" data-exercise="conditie3">Burpees</button>
+        </div>
+
+        <div id="exercise-details" class="hidden">
+          <h2 id="exercise-title"></h2>
+          <p id="exercise-description"></p>
+          <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
+          <div id="exercise-checkbox-container"></div>
+          <button id="close-exercise" class="chart-btn">❌ Închide</button>
+        </div>
+
+        <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
+        <button id="back" onclick="window.location.href='../dashboard.html'" class="chart-btn">⬅️ Înapoi la Dashboard</button>
+      </section>
+    </main>
+  </div>
 
   <div id="toast" class="toast">✔️ Completat!</div>
 
   <script src="/js/dark-mode.js"></script>
+  <script src="../js/dashboard.js"></script>
+
   <script type="module">
     import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
@@ -74,33 +73,20 @@
     const auth = getAuth();
     const categorie = "conditie";
 
-    onAuthStateChanged(auth, (user) => {
-  const userInfo = document.getElementById("user-info");
-  if (user) {
-    const nameToShow = user.displayName 
-      ? user.displayName 
-      : user.email.split("@")[0];
-    userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
-  } else {
-    userInfo.textContent = "🔒 Nu ești autentificat";
-  }
-});
-
-
     const exercises = {
       conditie1: {
         title: "Sprinturi scurte",
-        description: "Execută sprinturi de 10-20m cu pauze scurte.",
+        description: "Alergări rapide de 10–20m pentru dezvoltarea exploziei.",
         video: "https://www.youtube.com/embed/EXAMPLE1"
       },
       conditie2: {
-        title: "Alergare în trepte",
-        description: "Aleargă pe trepte pentru a-ți crește anduranța.",
+        title: "Sărituri pe loc",
+        description: "Crește rezistența și forța picioarelor cu sărituri repetate.",
         video: "https://www.youtube.com/embed/EXAMPLE2"
       },
       conditie3: {
-        title: "Circuit cardio",
-        description: "Combină exerciții de intensitate mare într-un circuit rapid.",
+        title: "Burpees",
+        description: "Exercițiu complet pentru anduranță și forță generală.",
         video: "https://www.youtube.com/embed/EXAMPLE3"
       }
     };
@@ -155,11 +141,14 @@
     });
 
     onAuthStateChanged(auth, (user) => {
-      if (user) loadCheckboxState(categorie);
+      if (user) {
+        const userInfo = document.getElementById("user-info");
+        const nameToShow = user.displayName || user.email.split("@")[0];
+        userInfo.textContent = `👋 Salut, ${nameToShow.toUpperCase()}`;
+        loadCheckboxState(categorie);
+      }
     });
-  </script>
 
-  <script>
     function showToast(message = "✔️ Completat!") {
       const toast = document.getElementById("toast");
       toast.textContent = message;
@@ -167,7 +156,5 @@
       setTimeout(() => toast.classList.remove("show"), 2500);
     }
   </script>
-<script src="../js/dashboard.js"></script>
-
 </body>
 </html>
