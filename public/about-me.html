@@ -36,11 +36,52 @@
 
     <section class="content">
       <h1>👤 Despre Mine</h1>
-      <p>Sunt Tiberiu, dezvoltatorul aplicației Swish Plan și fost jucător profesionist de baschet. Această aplicație este parte din lucrarea mea de licență și are scopul de a ajuta sportivii să-și organizeze și urmărească antrenamentele.</p>
+      
+      <p>
+        Salut! Eu sunt un tânăr pasionat de baschet și dezvoltare personală, mereu în căutarea progresului – atât pe teren, cât și în afara lui. Acest proiect a luat naștere din dorința de a ajuta jucători ca mine să-și urmeze planul de antrenament într-un mod organizat, interactiv și motivant.
+      </p>
+      <p>
+        Baschetul nu este doar un sport pentru mine – este o disciplină care m-a învățat perseverența, colaborarea și importanța fiecărui pas mic în drumul spre reușită. Prin "Swish Plan", vreau să împărtășesc aceste valori și cu alți tineri sportivi.
+      </p>
+      <p>
+        Încă joc activ baschet, iar experiențele mele pe teren mă ajută să îmbunătățesc constant aplicația. Cred că fiecare jucător merită să aibă un plan care să-l ajute să-și atingă obiectivele, iar "Swish Plan" este aici pentru a face acest lucru posibil.
+      </p>
+
+
+      <div class="about-video">
+        <video controls width="720" height="405" style="border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+          <source src="img/videoFaze.mp4" type="video/mp4">
+          Browserul tău nu suportă redarea video.
+        </video>
+        
+      </div>
+
+      <div class="about-gallery">
+        <img src="img/me1.jpg" alt="poza1"/>
+        <img src="img/PozaNR2.JPG" alt="poza2"/>
+        <img src="img/PozaNr3.JPG" alt="poza3"/>
+        <img src="img/Calin.jpg" alt="poza4"/>
+      </div>
     </section>
   </main>
 
   <script src="js/dark-mode.js"></script>
   <script type="module" src="js/auth.js"></script>
+  <script src="js/dark-mode.js"></script>
+<script type="module">
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    const userInfo = document.getElementById("user-info");
+    if (!user) {
+      userInfo.textContent = "🔒 Nu ești autentificat";
+      return;
+    }
+    const nameToShow = user.displayName || user.email.split("@")[0];
+    userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
+  });
+</script>
+
 </body>
 </html>

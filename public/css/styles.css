@@ -1,3 +1,4 @@
+
 body.intro-page {
   margin: 0;
   padding: 0;
@@ -310,11 +311,16 @@ body.dark-mode .video-container {
 
 /* CONTENT AREA */
 .content {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.05);
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
+  max-width: 760px;
+  width: 100%;
+  margin: 30px auto;
+  text-align: left;
 }
+
 
 h1 {
   font-size: 24px;
@@ -963,11 +969,12 @@ body.dark-mode .nav-links button:hover {
 }
 
 html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
+  height: auto;
+  min-height: 100vh;
   overflow-x: hidden;
+  overflow-y: auto;
 }
+
 
 
 /* === Toast Notification === */
@@ -1033,8 +1040,9 @@ html, body {
 .wrapper {
   display: flex;
   min-height: 100vh;
-  overflow: hidden;
+  width: 100%;
 }
+
 
 .sidebar {
   width: 250px;
@@ -1062,16 +1070,6 @@ html, body {
   margin-bottom: 1rem;
 }
 
-.content {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
-  max-width: 960px;
-  width: 100%;
-  margin: 0 auto;
-}
-
 /* Responsivitate */
 @media (max-width: 768px) {
   .wrapper {
@@ -1090,6 +1088,47 @@ html, body {
     padding: 1rem;
   }
 }
+
+
+.about-video {
+  margin: 30px 0;
+  text-align: center;
+}
+.about-video iframe {
+  width: 100%;
+  max-width: 720px;
+  height: 405px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Galerie poze */
+.about-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 30px;
+}
+
+.about-gallery img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.about-gallery img:hover {
+  transform: scale(1.05);
+}
+
+.about-video {
+  margin: 40px 0 30px;
+  display: flex;
+  justify-content: center;
+}
+
 
 
 /* RESPONSIVE */

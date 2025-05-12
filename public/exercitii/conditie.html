@@ -144,7 +144,7 @@
       if (user) {
         const userInfo = document.getElementById("user-info");
         const nameToShow = user.displayName || user.email.split("@")[0];
-        userInfo.textContent = `👋 Salut, ${nameToShow.toUpperCase()}`;
+        userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
         loadCheckboxState(categorie);
       }
     });

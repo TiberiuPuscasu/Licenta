@@ -80,7 +80,7 @@
       const userInfo = document.getElementById("user-info");
       if (user) {
         const nameToShow = user.displayName || user.email.split("@")[0];
-        userInfo.textContent = `👋 Salut, ${nameToShow.toUpperCase()}`;
+        userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
       } else {
         userInfo.textContent = "🔒 Nu ești autentificat";
       }

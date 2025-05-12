@@ -34,11 +34,36 @@
 
     <section class="content">
       <h1>👥 Despre Noi</h1>
-      <p>Swish Plan este o aplicație educațională concepută pentru sportivi și antrenori. Scopul nostru este să oferim o experiență digitală utilă în antrenamente, cu urmărirea progresului și resurse video utile.</p>
+<p>
+  "Swish Plan" este un proiect creat de un jucător de baschet pentru alți jucători de baschet. Ne-am propus să oferim un spațiu digital unde sportivii pot urmări, evalua și îmbunătăți performanța lor prin exerciții clare, provocări interactive și statistici personalizate.
+</p>
+<p>
+  Echipa noastră (formată momentan dintr-o singură persoană dedicată 🤓) lucrează constant la îmbunătățirea platformei, astfel încât fiecare utilizator să aibă o experiență cât mai plăcută și motivantă.
+</p>
+<p>
+  Fie că ești începător sau avansat, scopul nostru este să te ajutăm să-ți atingi obiectivele și să devii un jucător mai bun – pas cu pas, antrenament cu antrenament.
+</p>
+
     </section>
   </main>
 
   <script src="js/dark-mode.js"></script>
   <script type="module" src="js/auth.js"></script>
+  <script src="js/dark-mode.js"></script>
+<script type="module">
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+  const auth = getAuth();
+  onAuthStateChanged(auth, (user) => {
+    const userInfo = document.getElementById("user-info");
+    if (!user) {
+      userInfo.textContent = "🔒 Nu ești autentificat";
+      return;
+    }
+    const nameToShow = user.displayName || user.email.split("@")[0];
+    userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
+  });
+</script>
+
 </body>
 </html>
