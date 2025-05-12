@@ -875,6 +875,7 @@ body.auth-page {
   left: 0;
   z-index: 999;
   color: white;
+  border-radius: 20px 0 20px 20px;
 }
 
 .logo-block {
@@ -1052,6 +1053,7 @@ html, body {
   color: white;
   position: relative;
   flex-shrink: 0;
+  border-radius: 0 20px 20px 0;
 }
 
 .main-content {
@@ -1129,38 +1131,111 @@ html, body {
   justify-content: center;
 }
 
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #ffffff;
+  padding: 12px 24px;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+  width: 775px; /* Aliniat cu .content */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#user-info {
+  font-size: 16px;
+  font-weight: 600;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+#dark-mode-toggle {
+  background: linear-gradient(135deg, #FF7F11, #db6415);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#dark-mode-toggle:hover {
+  transform: scale(1.1);
+}
 
 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  body.dashboard-layout {
-    flex-direction: column;
+@keyframes wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  30% { transform: rotate(15deg); }
+  45% { transform: rotate(-10deg); }
+}
+
+#user-info::before {
+  content: '👋';
+  animation: wave 2s infinite;
+}
+
+/* Responsive pentru iPhone 14 (ecrane mici, sub 400px) */
+@media (max-width: 400px) {
+  body {
+    font-size: 14px;
   }
 
-  .sidebar {
-    height: 100vh;
-    position: fixed;
-    overflow-y: auto;
-  }
-  
   .main-content {
-    margin-left: 220px;
-    padding: 30px;
-    min-height: 100vh;
-    overflow-x: hidden;
+    padding: 10px;
   }
-  
 
   .topbar {
     flex-direction: column;
     gap: 10px;
   }
 
-  .nav-links {
-    flex-direction: row;
+  .content {
+    padding: 15px;
   }
 
-  .content {
+  .sidebar {
+    display: none; /* Ascunde sidebar-ul pe ecrane mici */
+  }
+}
+
+/* Responsive pentru tablete (ecrane între 401px și 768px) */
+@media (min-width: 401px) and (max-width: 768px) {
+  .sidebar {
+    width: 180px;
+  }
+
+  .main-content {
+    margin-left: 180px;
     padding: 20px;
+  }
+
+  .topbar {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+/* Responsive pentru laptopuri mici (ecrane între 769px și 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 220px;
+  }
+
+  .main-content {
+    margin-left: 220px;
+    padding: 30px;
+  }
+
+  .topbar {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }

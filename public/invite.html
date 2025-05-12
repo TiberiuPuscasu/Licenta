@@ -3,50 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Invită un prieten</title>
+  <title>Invită un Prieten</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" href="img/Logo1.png" type="image/png">
 </head>
 <body class="dashboard-layout">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="logo-block">
-      <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
-      <span class="logo-title">SWISH PLAN</span>
-    </div>
-    <nav class="nav-links">
-      <button onclick="location.href='dashboard.html'">🏠 Dashboard</button>
-      <button onclick="location.href='medalii.html'">🥇 Medaliile Mele</button>
-      <button onclick="location.href='statistici.html'">📊 Progresul Meu</button>
-      <button onclick="location.href='unsubscribe.html'">📤 Dezabonare</button>
-      <button onclick="location.href='about-me.html'">👤 Despre Mine</button>
-      <button onclick="location.href='about-us.html'">👥 Despre Noi</button>
-      <button onclick="location.href='invite.html'">🤝 Invită un prieten</button>
-      <button id="logout-btn">🚪 Log out</button>
-    </nav>
-  </aside>
+  <div class="menu-toggle" id="menu-toggle">☰</div>
 
-  <!-- MAIN CONTENT -->
+  <div class="slide-menu hidden" id="slide-menu">
+    <div class="menu-content">
+      <span id="menu-close" class="menu-close">✕</span>
+      <div class="logo-block">
+        <img src="img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+        <span class="logo-title">SWISH PLAN</span>
+      </div>
+      <a href="dashboard.html" class="menu-dashboard-link">🏠 Dashboard</a>
+      <nav class="menu-links">
+        <a href="medalii.html">🥇 Medaliile Mele</a>
+        <a href="statistici.html">📊 Progresul Meu</a>
+        <a href="forgot-password.html">🔑 Resetare parolă</a>
+        <a href="about-me.html">👤 Despre Mine</a>
+        <a href="about-us.html">👥 Despre Noi</a>
+        <a href="#" onclick="copyInviteLink()">🤝 Invită un prieten</a>
+        <a href="#" id="logout-btn">🚪 Logout</a>
+      </nav>
+    </div>
+  </div>
+  
+
+  <!-- MAIN -->
   <main class="main-content">
     <header class="topbar">
       <div id="user-info">👋</div>
       <button id="dark-mode-toggle">🌙</button>
     </header>
 
-    <section class="content">
+    <section class="content" style="text-align: center;">
       <h1>🤝 Invită un prieten</h1>
-      <p>Distribuie aplicația Swish Plan și antrenați-vă împreună!</p>
+      <p>Împărtășește pasiunea ta pentru baschet! Trimite linkul unui prieten și antrenați-vă împreună!</p>
 
-      <div class="invite-box">
-        <input
-          type="text"
-          id="invite-link"
-          value="https://swishplan.app/invite"
-          readonly
-        />
-        <button onclick="copyInviteLink()" class="chart-btn">📋 Copiază linkul</button>
-        <p id="copied-message" class="hidden" style="margin-top: 10px; color: green;">✔️ Copiat în clipboard!</p>
+      <div style="margin-top: 20px;">
+        <input id="invite-link" type="text" value="https://swishplan.app/invite" readonly style="padding: 10px; font-size: 16px; width: 80%; max-width: 400px; border-radius: 8px; border: 1px solid #ccc;" />
+        <br><br>
+        <button onclick="copyInviteLink()" class="chart-btn">📋 Copiază Linkul</button>
+        <div id="copy-toast" class="toast">✔️ Link copiat!</div>
       </div>
     </section>
   </main>
@@ -57,12 +59,49 @@
     function copyInviteLink() {
       const linkInput = document.getElementById("invite-link");
       linkInput.select();
-      document.execCommand("copy");
-
-      const msg = document.getElementById("copied-message");
-      msg.classList.remove("hidden");
-      setTimeout(() => msg.classList.add("hidden"), 2500);
+      linkInput.setSelectionRange(0, 99999);
+      navigator.clipboard.writeText(linkInput.value).then(() => {
+        const toast = document.getElementById("copy-toast");
+        toast.classList.add("show");
+        setTimeout(() => toast.classList.remove("show"), 2000);
+      });
     }
   </script>
+  <script type="module">
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+  
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      const userInfo = document.getElementById("user-info");
+      if (!user) {
+        userInfo.textContent = "🔒 Nu ești autentificat";
+        return;
+      }
+      const nameToShow = user.displayName || user.email.split("@")[0];
+      userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
+    });
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggleBtn = document.getElementById("menu-toggle");
+      const menu = document.getElementById("slide-menu");
+      const closeBtn = document.getElementById("menu-close");
+  
+      toggleBtn.addEventListener("click", () => {
+        menu.classList.add("visible");
+      });
+  
+      closeBtn.addEventListener("click", () => {
+        menu.classList.remove("visible");
+      });
+    });
+  
+    function copyInviteLink() {
+      const link = window.location.origin;
+      navigator.clipboard.writeText(link);
+      alert("🔗 Link-ul a fost copiat în clipboard!");
+    }
+  </script>
+  
 </body>
 </html>

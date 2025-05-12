@@ -5,28 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Condiție Fizică - Exerciții</title>
   <link rel="stylesheet" href="../css/styles.css" />
-  <link rel="icon" type="image/png" href="../img/Logo1.png" />
+  <link rel="icon" type="image/png" href="../img/Logo1.png">
 </head>
 <body class="dashboard-layout exercise-page">
   <div class="wrapper">
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+    <div class="menu-toggle" id="menu-toggle">☰</div>
+
+  <div class="slide-menu hidden" id="slide-menu">
+    <div class="menu-content">
+      <span id="menu-close" class="menu-close">✕</span>
       <div class="logo-block">
         <img src="../img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
         <span class="logo-title">SWISH PLAN</span>
       </div>
-      <nav class="nav-links">
-        <button onclick="location.href='../dashboard.html'">🏠 Dashboard</button>
-        <button onclick="location.href='../medalii.html'">🥇 Medaliile Mele</button>
-        <button onclick="location.href='../statistici.html'">📊 Progresul Meu</button>
-        <button onclick="location.href='../forgot-password.html'">🔑 Resetare parolă</button>
-        <button onclick="location.href='../unsubscribe.html'">📤 Dezabonare</button>
-        <button onclick="location.href='../about-me.html'">👤 Despre Mine</button>
-        <button onclick="location.href='../about-us.html'">👥 Despre Noi</button>
-        <button onclick="copyInviteLink()">🤝 Invită un prieten</button>
-        <button id="logout-btn">🚪 Log out</button>
-      </nav>
-    </aside>
+      <a href="/dashboard.html" class="menu-dashboard-link">🏠 Dashboard</a>
+        <nav class="menu-links">
+          <a href="/medalii.html">🥇 Medaliile Mele</a>
+          <a href="/statistici.html">📊 Progresul Meu</a>
+          <a href="/forgot-password.html">🔑 Resetare parolă</a>
+          <a href="/about-me.html">👤 Despre Mine</a>
+          <a href="/about-us.html">👥 Despre Noi</a>
+          <a href="#" onclick="copyInviteLink()">🤝 Invită un prieten</a>
+          <a href="#" id="logout-btn">🚪 Logout</a>
+        </nav>
+    </div>
+  </div>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
