@@ -25,6 +25,7 @@
       <input type="password" id="password" placeholder="Parolă" required />
       <button id="login-btn" type="button">Autentifică-te</button>
       <p>Nu ai cont? <a href="register.html">Înregistrează-te</a></p>
+      <p>Ai uitat parola? <a href="forgot-password.html">Resetează aici</a></p>
       <button id="google-login" class="chart-btn">🔐 Login cu Google</button>
     </div>
   </div>
@@ -33,18 +34,32 @@
   <div id="toast" class="toast hidden">Mesaj aici</div>
   <script type="module" src="js/auth.js"></script>
   <script type="module">
-    import { signInWithGoogle } from './js/firebase-config.js';
-  
-    document.getElementById("google-login").addEventListener("click", async () => {
-      try {
-        const user = await signInWithGoogle();
-        alert(`Bun venit, ${user.displayName}!`);
+  import { signInWithGoogle } from './js/firebase-config.js';
+
+  document.getElementById("google-login").addEventListener("click", async () => {
+    try {
+      const user = await signInWithGoogle();
+
+      // 🔽 Afișare toast personalizat (exact ca în auth.js)
+      const toast = document.getElementById("toast");
+      toast.textContent = `Autentificat cu succes!`;
+      toast.className = "toast show success";
+
+      setTimeout(() => {
+        toast.className = "toast";
         window.location.href = "dashboard.html";
-      } catch (error) {
-        alert("❌ Eroare la autentificarea cu Google.");
-      }
-    });
-  </script>
-  
+      }, 1500);
+    } catch (error) {
+      const toast = document.getElementById("toast");
+      toast.textContent = `Eroare la autentificarea cu Google.`;
+      toast.className = "toast show error";
+
+      setTimeout(() => {
+        toast.className = "toast";
+      }, 3000);
+    }
+  });
+</script>
+
 </body>
 </html>

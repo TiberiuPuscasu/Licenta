@@ -31,7 +31,26 @@ document.addEventListener("DOMContentLoaded", () => {
                         window.location.href = "dashboard.html";
                     }, 1000);
                 })
-                .catch(error => showToast(error.message, "error"));
+                .catch((error) => {
+                        const errorCode = error.code;
+                        let message = "A apărut o eroare. Încearcă din nou.";
+
+                        switch (errorCode) {
+                            case "auth/user-not-found":
+                                message = "Acest cont nu există.";
+                                break;
+                            case "auth/wrong-password":
+                                message = "Parola introdusă este greșită.";
+                                break;
+                            case "auth/invalid-email":
+                                message = "Adresa de email este invalidă.";
+                                break;
+                           
+    }
+
+    showToast(message, "error");
+});
+
         });
     }
 
