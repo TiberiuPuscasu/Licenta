@@ -10,7 +10,6 @@
 <body class="dashboard-layout exercise-page">
   <div class="wrapper">
     <div class="menu-toggle" id="menu-toggle">☰</div>
-
     <div class="slide-menu hidden" id="slide-menu">
       <div class="menu-content">
         <span id="menu-close" class="menu-close">✕</span>
@@ -39,15 +38,15 @@
 
       <section class="content">
         <h1>Aruncări - Îmbunătățește-ți precizia</h1>
-        <p>Selectează un exercițiu pentru a vedea detaliile și videoclipul. Bifează după finalizare!</p>
+        <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
 
         <div class="exercise-list">
-          <button class="exercise-btn" data-exercise="aruncari1">Aruncare liberă</button>
-          <button class="exercise-btn" data-exercise="aruncari2">Aruncare în mișcare</button>
-          <button class="exercise-btn" data-exercise="aruncari3">Aruncare din 3 puncte</button>
+          <button class="exercise-btn" data-exercise="aruncari1">Aruncări de la 3 puncte</button>
+          <button class="exercise-btn" data-exercise="aruncari2">Aruncări libere</button>
+          <button class="exercise-btn" data-exercise="aruncari3">Aruncări în mișcare</button>
         </div>
 
-        <div id="exercise-details" class="hidden">
+        <div id="exercise-details" class="hidden centered-column">
           <h2 id="exercise-title"></h2>
           <p id="exercise-description"></p>
           <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
@@ -65,35 +64,44 @@
 
   <script src="/js/dark-mode.js"></script>
   <script src="../js/dashboard.js"></script>
-
   <script type="module">
     import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
     import { db } from "../js/firebase-config.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
     const auth = getAuth();
     const categorie = "aruncari";
 
+    onAuthStateChanged(auth, (user) => {
+      const userInfo = document.getElementById("user-info");
+      if (user) {
+        const nameToShow = user.displayName || user.email.split("@")[0];
+        userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
+      } else {
+        userInfo.textContent = "🔒 Nu ești autentificat";
+      }
+    });
+
     const exercises = {
       aruncari1: {
-        title: "Aruncare liberă",
-        description: "Exersează aruncările din poziție fixă, fără adversar.",
-        video: "https://www.youtube.com/embed/EXAMPLE1"
+        title: "Aruncări de la 3 puncte",
+        description: "Exersează precizia de la distanță.",
+        video: "https://www.youtube.com/embed/dpQbR5R9FzI"
       },
       aruncari2: {
-        title: "Aruncare în mișcare",
-        description: "Execută aruncări după dribling sau pas.",
-        video: "https://www.youtube.com/embed/EXAMPLE2"
+        title: "Aruncări libere",
+        description: "Perfecționează-ți aruncările libere.",
+        video: "https://www.youtube.com/embed/fX-KiJM0hMM"
       },
       aruncari3: {
-        title: "Aruncare din 3 puncte",
-        description: "Lucrează la precizia de la distanță.",
-        video: "https://www.youtube.com/embed/EXAMPLE3"
+        title: "Aruncări în mișcare",
+        description: "Simulează aruncări rapide din acțiune.",
+        video: "https://www.youtube.com/embed/4bDRx4_t9Kg"
       }
     };
 
-    // Rămâne identic ca în celelalte pagini:
     const detailsSection = document.getElementById("exercise-details");
     const titleElement = document.getElementById("exercise-title");
     const descriptionElement = document.getElementById("exercise-description");
@@ -102,7 +110,7 @@
     const closeButton = document.getElementById("close-exercise");
 
     document.querySelectorAll(".exercise-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
         const key = btn.dataset.exercise;
         const ex = exercises[key];
         if (!ex) return;
@@ -119,22 +127,26 @@
           </label>
         `;
 
-        onAuthStateChanged(auth, async (user) => {
-          if (!user) return;
-          const progresRef = doc(db, "progres", user.uid);
-          const snapshot = await getDoc(progresRef);
-          const data = snapshot.exists() ? snapshot.data() : {};
-          const userProgress = data[categorie] || {};
-          const cb = document.getElementById(key);
-          if (cb) {
-            cb.checked = userProgress[key] === true;
-            loadCheckboxState(categorie);
-            cb.addEventListener("change", () => {
-              saveProgress(cb, key, categorie);
-              if (cb.checked) showToast("✔️ Completat!");
-            });
-          }
-        });
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const progresRef = doc(db, "progres", user.uid);
+        const snapshot = await getDoc(progresRef);
+        const data = snapshot.exists() ? snapshot.data() : {};
+        const userProgress = data[categorie] || {};
+        const cb = document.getElementById(key);
+
+        if (cb) {
+          cb.checked = userProgress[key] === true;
+          loadCheckboxState(categorie);
+          cb.addEventListener("change", () => {
+            saveProgress(cb, key, categorie);
+            if (cb.checked) {
+              showToast("✔️ Completat!");
+              salveazaInCalendar(ex.title, "aruncari");
+            }
+          });
+        }
       });
     });
 
@@ -144,12 +156,7 @@
     });
 
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const userInfo = document.getElementById("user-info");
-        const nameToShow = user.displayName || user.email.split("@")[0];
-        userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
-        loadCheckboxState(categorie);
-      }
+      if (user) loadCheckboxState(categorie);
     });
 
     function showToast(message = "✔️ Completat!") {
@@ -157,6 +164,23 @@
       toast.textContent = message;
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    async function salveazaInCalendar(titlu, categorie) {
+      const user = auth.currentUser;
+      if (!user) return;
+      const azi = new Date().toLocaleDateString('fr-CA');
+      try {
+        await addDoc(collection(getFirestore(), "exercitii"), {
+          uid: user.uid,
+          title: titlu,
+          categorie: categorie,
+          date: azi
+        });
+        console.log("✅ Exercițiu salvat în Firebase!");
+      } catch (err) {
+        console.error("❌ Eroare la salvare:", err);
+      }
     }
   </script>
 </body>

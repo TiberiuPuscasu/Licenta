@@ -6,6 +6,9 @@
   <title>Dashboard</title>
   <link rel="stylesheet" href="css/styles.css" />
   <link rel="icon" type="image/png" href="img/Logo1.png">
+  <!-- FullCalendar CSS -->
+<link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+
 </head>
 <body class="dashboard-layout">
 
@@ -38,6 +41,16 @@
     <!-- HEADER -->
     <header class="topbar">
       <div id="user-info">Autentificare...</div>
+      <div class="dropdown-reset">
+  <button id="reset-general">🔁 Resetare Progres</button>
+      <div class="dropdown-content">
+        <button id="reset-all">🗑️ Tot progresul</button>
+        <button id="reset-dribling">🧽 Doar Dribling</button>
+        <button id="reset-aruncari">🧽 Doar Aruncări</button>
+        <button id="reset-aparare">🧽 Doar Apărare</button>
+        <button id="reset-conditie">🧽 Doar Condiție</button>
+      </div>
+    </div>
       <button id="dark-mode-toggle">🌙</button>
     </header>
 
@@ -96,6 +109,14 @@
         <button id="ai-submit">Trimite întrebare</button>
         <div id="ai-answer" class="ai-answer hidden"></div>
       </div>
+
+              <!-- Calendarul de exerciții -->
+        <h2 style="margin-top: 30px;">🗓️ Calendarul Exercițiilor</h2>
+        <div id="calendar"></div>
+        <button id="analizeaza" class="chart-btn">Analizează Distribuția</button>
+        <div id="sugestii" style="margin-top: 10px;"></div>
+        <button id="reseteaza-ziua" class="chart-btn">🗑️ Resetează ziua curentă</button>
+
     </section>
     
   </main>
@@ -107,6 +128,9 @@
   <script type="module" src="/js/dashboard.js"></script>
   <script type="module" src="js/auth.js"></script>
   <script src="js/dark-mode.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script type="module" src="js/calendar.js"></script>
+
 
   <!-- FIREBASE PROGRESS SCRIPT -->
   <script type="module">

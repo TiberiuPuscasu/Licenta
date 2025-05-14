@@ -9,17 +9,15 @@
 </head>
 <body class="dashboard-layout exercise-page">
   <div class="wrapper">
-    <!-- SIDEBAR -->
     <div class="menu-toggle" id="menu-toggle">☰</div>
-
-  <div class="slide-menu hidden" id="slide-menu">
-    <div class="menu-content">
-      <span id="menu-close" class="menu-close">✕</span>
-      <div class="logo-block">
-        <img src="../img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
-        <span class="logo-title">SWISH PLAN</span>
-      </div>
-      <a href="/dashboard.html" class="menu-dashboard-link">🏠 Dashboard</a>
+    <div class="slide-menu hidden" id="slide-menu">
+      <div class="menu-content">
+        <span id="menu-close" class="menu-close">✕</span>
+        <div class="logo-block">
+          <img src="../img/Logo.png" alt="Swish Plan Logo" class="logo-img" />
+          <span class="logo-title">SWISH PLAN</span>
+        </div>
+        <a href="/dashboard.html" class="menu-dashboard-link">🏠 Dashboard</a>
         <nav class="menu-links">
           <a href="/medalii.html">🥇 Medaliile Mele</a>
           <a href="/statistici.html">📊 Progresul Meu</a>
@@ -29,10 +27,9 @@
           <a href="#" onclick="copyInviteLink()">🤝 Invită un prieten</a>
           <a href="#" id="logout-btn">🚪 Logout</a>
         </nav>
+      </div>
     </div>
-  </div>
 
-    <!-- MAIN CONTENT -->
     <main class="main-content">
       <header class="topbar">
         <div id="user-info">🔄 Se încarcă...</div>
@@ -40,16 +37,16 @@
       </header>
 
       <section class="content">
-        <h1>Apărare - Îmbunătățește-ți poziția</h1>
+        <h1>Apărare - Devino o fortă defensivă</h1>
         <p>Alege un exercițiu pentru a vedea detalii și un videoclip explicativ. Bifează exercițiul după finalizare!</p>
 
         <div class="exercise-list">
           <button class="exercise-btn" data-exercise="aparare1">Poziție defensivă</button>
-          <button class="exercise-btn" data-exercise="aparare2">Pas defensiv lateral</button>
-          <button class="exercise-btn" data-exercise="aparare3">Blocaj adversar</button>
+          <button class="exercise-btn" data-exercise="aparare2">Apărare 1-la-1</button>
+          <button class="exercise-btn" data-exercise="aparare3">Recuperare defensivă</button>
         </div>
 
-        <div id="exercise-details" class="hidden">
+        <div id="exercise-details" class="hidden centered-column">
           <h2 id="exercise-title"></h2>
           <p id="exercise-description"></p>
           <iframe id="exercise-video" frameborder="0" allowfullscreen></iframe>
@@ -73,25 +70,36 @@
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
     import { db } from "../js/firebase-config.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
     const auth = getAuth();
     const categorie = "aparare";
 
+    onAuthStateChanged(auth, (user) => {
+      const userInfo = document.getElementById("user-info");
+      if (user) {
+        const nameToShow = user.displayName || user.email.split("@")[0];
+        userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
+      } else {
+        userInfo.textContent = "🔒 Nu ești autentificat";
+      }
+    });
+
     const exercises = {
       aparare1: {
         title: "Poziție defensivă",
-        description: "Adoptă poziția corectă pentru apărare eficientă.",
-        video: "https://www.youtube.com/embed/EXAMPLE1"
+        description: "Menține o poziție joasă, stabilă și rapidă.",
+        video: "https://www.youtube.com/embed/4NjmnLg6mqg"
       },
       aparare2: {
-        title: "Pas defensiv lateral",
-        description: "Antrenează-te să te deplasezi eficient lateral.",
-        video: "https://www.youtube.com/embed/EXAMPLE2"
+        title: "Apărare 1-la-1",
+        description: "Simulează apărarea agresivă împotriva unui adversar.",
+        video: "https://www.youtube.com/embed/tQUzvLjZofM"
       },
       aparare3: {
-        title: "Blocaj adversar",
-        description: "Exersează cum să oprești un jucător fără fault.",
-        video: "https://www.youtube.com/embed/EXAMPLE3"
+        title: "Recuperare defensivă",
+        description: "Blochează și recuperează mingea după aruncări.",
+        video: "https://www.youtube.com/embed/HbF-4CGgyYQ"
       }
     };
 
@@ -103,7 +111,7 @@
     const closeButton = document.getElementById("close-exercise");
 
     document.querySelectorAll(".exercise-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
+      btn.addEventListener("click", async () => {
         const key = btn.dataset.exercise;
         const ex = exercises[key];
         if (!ex) return;
@@ -120,22 +128,26 @@
           </label>
         `;
 
-        onAuthStateChanged(auth, async (user) => {
-          if (!user) return;
-          const progresRef = doc(db, "progres", user.uid);
-          const snapshot = await getDoc(progresRef);
-          const data = snapshot.exists() ? snapshot.data() : {};
-          const userProgress = data[categorie] || {};
-          const cb = document.getElementById(key);
-          if (cb) {
-            cb.checked = userProgress[key] === true;
-            loadCheckboxState(categorie);
-            cb.addEventListener("change", () => {
-              saveProgress(cb, key, categorie);
-              if (cb.checked) showToast("✔️ Completat!");
-            });
-          }
-        });
+        const user = auth.currentUser;
+        if (!user) return;
+
+        const progresRef = doc(db, "progres", user.uid);
+        const snapshot = await getDoc(progresRef);
+        const data = snapshot.exists() ? snapshot.data() : {};
+        const userProgress = data[categorie] || {};
+        const cb = document.getElementById(key);
+
+        if (cb) {
+          cb.checked = userProgress[key] === true;
+          loadCheckboxState(categorie);
+          cb.addEventListener("change", () => {
+            saveProgress(cb, key, categorie);
+            if (cb.checked) {
+              showToast("✔️ Completat!");
+              salveazaInCalendar(ex.title, categorie);
+            }
+          });
+        }
       });
     });
 
@@ -145,12 +157,7 @@
     });
 
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const userInfo = document.getElementById("user-info");
-        const nameToShow = user.displayName || user.email.split("@")[0];
-        userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
-        loadCheckboxState(categorie);
-      }
+      if (user) loadCheckboxState(categorie);
     });
 
     function showToast(message = "✔️ Completat!") {
@@ -158,6 +165,23 @@
       toast.textContent = message;
       toast.classList.add("show");
       setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    async function salveazaInCalendar(titlu, categorie) {
+      const user = auth.currentUser;
+      if (!user) return;
+      const azi = new Date().toLocaleDateString('fr-CA');
+      try {
+        await addDoc(collection(getFirestore(), "exercitii"), {
+          uid: user.uid,
+          title: titlu,
+          categorie: categorie,
+          date: azi
+        });
+        console.log("✅ Exercițiu salvat în Firebase!");
+      } catch (err) {
+        console.error("❌ Eroare la salvare:", err);
+      }
     }
   </script>
 </body>

@@ -58,9 +58,6 @@
   <div id="exercise-checkbox-container"></div>
   <button id="close-exercise" class="chart-btn">❌ Închide</button>
 </div>
-
-
-
         <h2>Progresul tău: <span id="progress-percentage">0%</span></h2>
         <button id="back" onclick="window.location.href='../dashboard.html'" class="chart-btn">⬅️ Înapoi la Dashboard</button>
       </section>
@@ -73,103 +70,124 @@
   <!-- JS -->
   <script src="/js/dark-mode.js"></script>
   <script src="../js/dashboard.js"></script>
-
   <script type="module">
-    import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
-    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-    import { db } from "../js/firebase-config.js";
+  import { saveProgress, loadCheckboxState } from "../js/exercitii.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+  import { doc, getDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+  import { db } from "../js/firebase-config.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
 
-    const auth = getAuth();
-    const categorie = "dribling";
+  const auth = getAuth();
+  const categorie = "dribling";
 
-    onAuthStateChanged(auth, (user) => {
-      const userInfo = document.getElementById("user-info");
-      if (user) {
-        const nameToShow = user.displayName || user.email.split("@")[0];
-        userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
-      } else {
-        userInfo.textContent = "🔒 Nu ești autentificat";
-      }
-    });
+  onAuthStateChanged(auth, (user) => {
+    const userInfo = document.getElementById("user-info");
+    if (user) {
+      const nameToShow = user.displayName || user.email.split("@")[0];
+      userInfo.textContent = ` Salut, ${nameToShow.toUpperCase()}`;
+    } else {
+      userInfo.textContent = "🔒 Nu ești autentificat";
+    }
+  });
 
-    const exercises = {
-      dribling1: {
-        title: "Dribling cu mâna slabă",
-        description: "Exersează driblingul doar cu mâna pe care o folosești mai puțin.",
-        video: "https://www.youtube.com/shorts/TwsnggwSBfc"
-      },
-      dribling2: {
-        title: "Dribling în regim de viteză",
-        description: "Aleargă și menține controlul mingii la viteză mare.",
-        video: "https://www.youtube.com/embed/T7T1WbohU7A"
-      },
-      dribling3: {
-        title: "Dribling între picioare",
-        description: "Exersează trecerea mingii printre picioare pentru a îmbunătăți controlul.",
-        video: "https://www.youtube.com/embed/LH3VoWZ_fa4"
-      }
-    };
+  const exercises = {
+    dribling1: {
+      title: "Dribling cu mâna slabă",
+      description: "Exersează driblingul doar cu mâna pe care o folosești mai puțin.",
+      video: "https://www.youtube.com/shorts/TwsnggwSBfc"
+    },
+    dribling2: {
+      title: "Dribling în regim de viteză",
+      description: "Aleargă și menține controlul mingii la viteză mare.",
+      video: "https://www.youtube.com/embed/T7T1WbohU7A"
+    },
+    dribling3: {
+      title: "Dribling între picioare",
+      description: "Exersează trecerea mingii printre picioare pentru a îmbunătăți controlul.",
+      video: "https://www.youtube.com/embed/LH3VoWZ_fa4"
+    }
+  };
 
-    const detailsSection = document.getElementById("exercise-details");
-    const titleElement = document.getElementById("exercise-title");
-    const descriptionElement = document.getElementById("exercise-description");
-    const videoElement = document.getElementById("exercise-video");
-    const checkboxContainer = document.getElementById("exercise-checkbox-container");
-    const closeButton = document.getElementById("close-exercise");
+  const detailsSection = document.getElementById("exercise-details");
+  const titleElement = document.getElementById("exercise-title");
+  const descriptionElement = document.getElementById("exercise-description");
+  const videoElement = document.getElementById("exercise-video");
+  const checkboxContainer = document.getElementById("exercise-checkbox-container");
+  const closeButton = document.getElementById("close-exercise");
 
-    document.querySelectorAll(".exercise-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const key = btn.dataset.exercise;
-        const ex = exercises[key];
-        if (!ex) return;
+  document.querySelectorAll(".exercise-btn").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const key = btn.dataset.exercise;
+      const ex = exercises[key];
+      if (!ex) return;
 
-        titleElement.textContent = ex.title;
-        descriptionElement.textContent = ex.description;
-        videoElement.src = ex.video;
-        detailsSection.classList.remove("hidden");
+      titleElement.textContent = ex.title;
+      descriptionElement.textContent = ex.description;
+      videoElement.src = ex.video;
+      detailsSection.classList.remove("hidden");
 
-        checkboxContainer.innerHTML = `
-          <label>
-            <input type="checkbox" id="${key}" />
-            Am finalizat acest exercițiu
-          </label>
-        `;
+      checkboxContainer.innerHTML = `
+        <label>
+          <input type="checkbox" id="${key}" />
+          Am finalizat acest exercițiu
+        </label>
+      `;
 
-        onAuthStateChanged(auth, async (user) => {
-          if (!user) return;
-          const progresRef = doc(db, "progres", user.uid);
-          const snapshot = await getDoc(progresRef);
-          const data = snapshot.exists() ? snapshot.data() : {};
-          const userProgress = data[categorie] || {};
-          const cb = document.getElementById(key);
-          if (cb) {
-            cb.checked = userProgress[key] === true;
-            loadCheckboxState(categorie);
-            cb.addEventListener("change", () => {
-              saveProgress(cb, key, categorie);
-              if (cb.checked) showToast("✔️ Completat!");
-            });
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const progresRef = doc(db, "progres", user.uid);
+      const snapshot = await getDoc(progresRef);
+      const data = snapshot.exists() ? snapshot.data() : {};
+      const userProgress = data[categorie] || {};
+      const cb = document.getElementById(key);
+
+      if (cb) {
+        cb.checked = userProgress[key] === true;
+        loadCheckboxState(categorie);
+        cb.addEventListener("change", () => {
+          saveProgress(cb, key, categorie);
+          if (cb.checked) {
+            showToast("✔️ Completat!");
+            salveazaInCalendar(ex.title, "Dribling");
           }
         });
+      }
+    });
+  });
+
+  closeButton.addEventListener("click", () => {
+    detailsSection.classList.add("hidden");
+    videoElement.src = "";
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) loadCheckboxState(categorie);
+  });
+
+  function showToast(message = "✔️ Completat!") {
+    const toast = document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2500);
+  }
+
+  async function salveazaInCalendar(titlu, categorie) {
+    const user = auth.currentUser;
+    if (!user) return;
+    const azi = new Date().toLocaleDateString('fr-CA'); // e.g. 2025-05-15
+    try {
+      await addDoc(collection(getFirestore(), "exercitii"), {
+        uid: user.uid,
+        title: titlu,
+        categorie: categorie,
+        date: azi
       });
-    });
-
-    closeButton.addEventListener("click", () => {
-      detailsSection.classList.add("hidden");
-      videoElement.src = "";
-    });
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) loadCheckboxState(categorie);
-    });
-
-    function showToast(message = "✔️ Completat!") {
-      const toast = document.getElementById("toast");
-      toast.textContent = message;
-      toast.classList.add("show");
-      setTimeout(() => toast.classList.remove("show"), 2500);
+      console.log("✅ Exercițiu salvat în Firebase!");
+    } catch (err) {
+      console.error("❌ Eroare la salvare:", err);
     }
-  </script>
+  }
+</script>
 </body>
 </html>

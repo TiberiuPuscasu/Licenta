@@ -1218,3 +1218,102 @@ body.dark-mode .auth-form-only button {
     padding: 40px 30px;
   }
 }
+
+.fc-event {
+  cursor: pointer;
+}
+
+.fc-event.Aruncări {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+}
+
+.fc-event.Dribling {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+}
+
+.dribling {
+  background-color: #f39c12 !important; /* portocaliu */
+  border-color: #f39c12 !important;
+}
+
+.aruncari {
+  background-color: #3498db !important; /* albastru */
+  border-color: #3498db !important;
+}
+
+.aparare {
+  background-color: #27ae60 !important; /* verde */
+  border-color: #27ae60 !important;
+}
+
+.conditie {
+  background-color: #9b59b6 !important; /* mov */
+  border-color: #9b59b6 !important;
+}
+
+.dropdown-reset {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-reset:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  min-width: 180px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  color: black;
+  padding: 10px 16px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown-content button:hover {
+  background-color: #f1f1f1;
+}
+
+/* Stil pentru butonul de resetare generală */
+#reset-general {
+  background: linear-gradient(90deg, #ff4d00, #ffb347);
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255, 77, 0, 0.15);
+  transition: background 0.3s, transform 0.2s;
+  margin: 10px 0;
+}
+
+#reset-general:hover {
+  background: linear-gradient(90deg, #ffb347, #ff4d00);
+  transform: scale(1.05);
+}
+/* Dark mode pentru butonul de resetare generală */
+body.dark-mode #reset-general {
+  background: linear-gradient(90deg, #ffb347, #ff922b);
+  color: #181818;
+  box-shadow: 0 4px 16px rgba(255, 168, 77, 0.18);
+  border: 1px solid #ff922b;
+}
+
+body.dark-mode #reset-general:hover {
+  background: linear-gradient(90deg, #ff922b, #ffb347);
+  color: #000;
+  border: 1px solid #ffb347;
+}
